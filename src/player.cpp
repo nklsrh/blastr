@@ -112,16 +112,16 @@ void Player::tracking(Environment& env)
 		dirToGoal = ((target - pos + ofVec2f(ofRandom(-10,10), ofRandom(-10,10))) * aggression).getNormalized();
 
 		if(dirToGoal.x > 0){
-			right(0.3 * aggression);
+			right(0.4 * aggression);
 		}
 		if(dirToGoal.x < 0){
-			left(0.3 * aggression);
+			left(0.4 * aggression);
 		}
 		if(dirToGoal.y > 0){
-			down(0.3 * aggression);
+			down(0.4 * aggression);
 		}
 		if(dirToGoal.y < 0){
-			up(0.3 * aggression);
+			up(0.4 * aggression);
 		}
 	//}
 }
@@ -201,16 +201,16 @@ void Player::input(float x, float y)
 	inpAcc.y = y;
 
 	if(x > 0){
-		right(0.3);
+		right(0.4 * aggression);
 	}
 	if(x < 0){
-		left(0.3);
+		left(0.4 * aggression);
 	}
 	if(y > 0){
-		down(0.3);
+		down(0.4 * aggression);
 	}
 	if(y < 0){
-		up(0.3);
+		up(0.4 * aggression);
 	}
 }
 //--------------------------------------------------------------

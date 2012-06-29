@@ -21,6 +21,7 @@ void Environment::setup()
 		tiles[i].pos.x = (((i - (i % numberOfRows))/numberOfRows) * tileSize) + tileSize/2;
 		tiles[i].pos.y = ((numberOfRows - (i % numberOfRows)) * tileSize) - tileSize/2;
 		tiles[i].setup(i, goalTile, tileSize);
+		tiles[i].intervalLength = ofRandom(2000) + 500;
 	}
 }
 
@@ -40,6 +41,21 @@ void Environment::draw(Camera& cam)
 
 	for(int i = 0; i < numberOfTiles; i++)
 	{
-		tiles[i].draw(cam, img_tile_white);
+		if(tiles[i].type == NORMAL)
+		{
+			tiles[i].draw(cam, img_tile_white);
+		}
+		if(tiles[i].type == GOAL)
+		{
+			tiles[i].draw(cam, img_tile_goal);
+		}
+		if(tiles[i].type == SAND)
+		{
+			tiles[i].draw(cam, img_tile_sand);
+		}
+		if(tiles[i].type == GLASS)
+		{
+			tiles[i].draw(cam, img_tile_goal);
+		}
 	}
 }

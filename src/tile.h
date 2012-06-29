@@ -16,11 +16,13 @@ class Tile {
 		void setup(int index, int goal, int size);
 		void update();
 		void draw(Camera& cam, ofImage& img);
+		void randomizeType();
+		void Timer();
 
 		ofRectangle rect, collisionRect;
 		ofVec2f pos;		//position
 
-		int type, index;
+		int type, index, intervalTime, intervalLength;
 		bool HasPlayer[10];
 };
 

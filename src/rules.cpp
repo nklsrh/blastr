@@ -14,7 +14,7 @@ void Rules::setup(double gameLength)
 //--------------------------------------------------------------
 void Rules::update()
 {
-	gameTime -= ofGetLastFrameTime() * 0.1;
+	gameTime -= ofGetLastFrameTime();
 }
 
 //--------------------------------------------------------------

@@ -14,6 +14,10 @@
 
 #define NORMAL 0
 #define GOAL 1
+#define SAND 2
+#define GLASS 3
+#define HOLE 4
+#define SPAWN 5
 
 class Environment {
 	public:

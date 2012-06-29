@@ -8,7 +8,7 @@
 
 void Game::setup()
 {
-	device = DEV_ALPHA;
+	device = PLAYBOOK;
 
 	if(device == DEV_ALPHA)
 	{

@@ -17,11 +17,11 @@ void Glados::setup(int numberOfRows, int tileSize)
 		if(i != 0)
 		{
 			bot = true;
-			players[i].aggression = ofRandom(0.5, 1);
+			players[i].aggression = 0.2;
 		}
 		else
 		{
-			players[i].aggression = 2;
+			players[i].aggression = 1;
 		}
 
 		players[i].setup(i, bot, playerSize, 0.6, 1);

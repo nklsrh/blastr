@@ -22,6 +22,6 @@ void HUD::update()
 void HUD::draw(Rules& r, Environment& e, Glados& g)
 {
 	ofSetColor(250, 110, 0);
-	verdana14.drawString(ofToString(ofGetFrameRate()), 30, 35);
+	verdana14.drawString("FPS: " + ofToString(ofGetFrameRate()) + ", Time: " + ofToString(r.gameTime), 30, 35);
 	ofSetColor(255, 255, 255);
 }
