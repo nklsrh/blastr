@@ -21,11 +21,12 @@ void Player::reset()
 {
 	pos = startingPos;
 	IsOnArena = true;
+	IsScoring = false;
 }
 //--------------------------------------------------------------
 void Player::update(Environment& env)
 {
-	if(index != 0)
+	if(index != 0 && IsOnArena)
 	{
 		tracking(env);
 	}
@@ -49,13 +50,27 @@ void Player::tiles(Environment& env)
 	switch(env.tiles[currentTile].type)
 	{
 		case SAND:
-			vel += (env.tiles[currentTile].pos - pos) * 0.01;
+			vel += (env.tiles[currentTile].pos - pos) * 0.05;
+			IsScoring = false;
+			currentTileType = SAND;
 		break;
 		case GLASS:
 			acc *= 1.2;
+			IsScoring = false;
+			currentTileType = GLASS;
 		break;
 		case HOLE:
 			IsOnArena = false;
+			IsScoring = false;
+			currentTileType = HOLE;
+		break;
+		case GOAL:
+			IsScoring = true;
+			currentTileType = GOAL;
+		break;
+		case NORMAL:
+			currentTileType = NORMAL;
+			IsScoring = false;
 		break;
 	}
 }
@@ -84,7 +99,7 @@ void Player::checkOnArena(Environment& env)
 	double marginOfError;
 	if(index != 0)
 	{
-		marginOfError = 0.02;
+		marginOfError = 0.0;
 	}
 	else
 	{

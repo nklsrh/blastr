@@ -38,8 +38,8 @@ class Player {
 		void left(float weight);
 		void right(float weight);
 
-		int index, chosenTarget, size, currentTile;
-		bool IsBot, IsApprehending, IsPreppingBlast, IsOnArena;
+		int index, chosenTarget, size, currentTile, currentTileType;
+		bool IsBot, IsApprehending, IsPreppingBlast, IsOnArena, IsScoring;
 		float aggression, maxBlastPower, score, blastStr, zPos;
 		ofVec2f pos, startingPos, vel, acc, inpAcc, inpTouch, target, dirToGoal, blastVel;	//inp = input value, in x and y
 };

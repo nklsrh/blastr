@@ -42,7 +42,7 @@ void Game::restart()
 //--------------------------------------------------------------
 void Game::update(float x1, float y1, bool IsTouch, float accx, float accy)
 {
-	rules.update();
+	rules.update(glados, env);
 	env.update();
 	glados.update(env, blastCol);
 	blastCol.update();

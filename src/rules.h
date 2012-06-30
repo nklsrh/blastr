@@ -8,14 +8,19 @@
 #ifndef RULES_H_
 #define RULES_H_
 
+#include "glados.h"
+#include "environment.h"
+
 #include "ofMain.h"
 
 class Rules {
 	public:
-		float gameTime;
+		float gameTime, scoreMultiplier, deathPenalty, marginOfError;
+
+		void scorePlayers(Glados& g);
 
 		void setup(double gameLength);
-		void update();
+		void update(Glados& g, Environment& e);
 		void draw();
 };
 
