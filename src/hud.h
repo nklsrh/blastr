@@ -16,7 +16,7 @@
 
 class HUD {
 	public:
-		void setup();
+		void setup(int windowWidth, int windowHeight);
 		void update();
 		void draw(Rules& r, Environment& e, Glados& g);
 

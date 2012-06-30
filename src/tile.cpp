@@ -7,16 +7,20 @@
 #include "tile.h"
 #include "environment.h"
 
-void Tile::setup(int index, int goalTile, int size)
+void Tile::setup(int index, int goalTile, int size, int numberOfRows, int numberOfTiles)
 {
 	if(index == goalTile)
 	{
-	  type = GOAL;
+		type = GOAL;
+	}
+	else if (index == numberOfRows - 1 || index == (numberOfRows - 1) * numberOfRows || index == numberOfTiles - 1 || index == 0)
+	{
+		type = SPAWN;
 	}
 	else
 	{
-	  type = NORMAL;
-	  randomizeType();
+		type = NORMAL;
+		randomizeType();
 	}
 
 	rect.width = size;

@@ -25,7 +25,7 @@ class Environment {
 		float zoomLevel;
 
 		Tile tiles[50];
-		ofImage img_background_env, img_tile_white, img_tile_goal, img_tile_sand;
+		ofImage img_background_env, img_tile_white, img_tile_goal, img_tile_sand, img_tile_glass, img_tile_spawn;
 
 		int goalTile;
 

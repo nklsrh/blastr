@@ -22,7 +22,10 @@ void Game::setup()
 		env.windowWidth = 1024;
 		env.zoomLevel = 0.6;	//smaller is closer
 	}
-
+	restart();
+}
+void Game::restart()
+{
 	env.numberOfRows = 7;
 	env.numberOfTiles = (env.numberOfRows * env.numberOfRows);
 	env.tileSize = env.windowHeight / env.numberOfRows / env.zoomLevel;
@@ -34,9 +37,8 @@ void Game::setup()
 
 	rules.setup(60);
 	//glados.players[0].pos = ofVec2f(500,500);
-	hud.setup();
+	hud.setup(env.windowWidth, env.windowHeight);
 }
-
 //--------------------------------------------------------------
 void Game::update(float x1, float y1, bool IsTouch, float accx, float accy)
 {

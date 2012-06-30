@@ -6,11 +6,11 @@
  */
 #include "hud.h"
 
-void HUD::setup()
+void HUD::setup(int windowWidth, int windowHeight)
 {
 	verdana14.loadFont(ofToDataPath("", true) + "/app/native/verdana.ttf", 28, true, true);
-	verdana14.setLineHeight(18.0f);
-	verdana14.setLetterSpacing(1.037);
+	verdana14.setLineHeight(18.0f * float(windowHeight/600));
+	verdana14.setLetterSpacing(1.037 * float(windowWidth/1024));
 }
 
 //--------------------------------------------------------------

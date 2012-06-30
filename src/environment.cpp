@@ -13,6 +13,8 @@ void Environment::setup()
 	img_tile_white.loadImage(ofToDataPath("", true) + "/app/native/tile_white_128.png");
 	img_tile_goal.loadImage(ofToDataPath("", true) + "/app/native/tile_goal_128.png");
 	img_tile_sand.loadImage(ofToDataPath("", true) + "/app/native/tile_sand_128.png");
+	img_tile_glass.loadImage(ofToDataPath("", true) + "/app/native/tile_glass_128.png");
+	img_tile_spawn.loadImage(ofToDataPath("", true) + "/app/native/tile_spawn_128.png");
 
 	img_background_env.loadImage(ofToDataPath("", true) + "/app/native/backdrop.png");
 
@@ -20,7 +22,7 @@ void Environment::setup()
 	{
 		tiles[i].pos.x = (((i - (i % numberOfRows))/numberOfRows) * tileSize) + tileSize/2;
 		tiles[i].pos.y = ((numberOfRows - (i % numberOfRows)) * tileSize) - tileSize/2;
-		tiles[i].setup(i, goalTile, tileSize);
+		tiles[i].setup(i, goalTile, tileSize, numberOfRows, numberOfTiles);
 		tiles[i].intervalLength = ofRandom(2000) + 500;
 	}
 }
@@ -41,21 +43,23 @@ void Environment::draw(Camera& cam)
 
 	for(int i = 0; i < numberOfTiles; i++)
 	{
-		if(tiles[i].type == NORMAL)
+		switch(tiles[i].type)
 		{
-			tiles[i].draw(cam, img_tile_white);
-		}
-		if(tiles[i].type == GOAL)
-		{
-			tiles[i].draw(cam, img_tile_goal);
-		}
-		if(tiles[i].type == SAND)
-		{
-			tiles[i].draw(cam, img_tile_sand);
-		}
-		if(tiles[i].type == GLASS)
-		{
-			tiles[i].draw(cam, img_tile_goal);
+			case NORMAL:
+				tiles[i].draw(cam, img_tile_white);
+			break;
+			case GOAL:
+				tiles[i].draw(cam, img_tile_goal);
+			break;
+			case SAND:
+				tiles[i].draw(cam, img_tile_sand);
+			break;
+			case GLASS:
+				tiles[i].draw(cam, img_tile_glass);
+			break;
+			case SPAWN:
+				tiles[i].draw(cam, img_tile_spawn);
+			break;
 		}
 	}
 }

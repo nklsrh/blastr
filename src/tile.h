@@ -13,7 +13,7 @@
 
 class Tile {
 	public:
-		void setup(int index, int goal, int size);
+		void setup(int index, int goalTile, int size, int numberOfRows, int numberOfTiles);
 		void update();
 		void draw(Camera& cam, ofImage& img);
 		void randomizeType();

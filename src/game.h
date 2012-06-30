@@ -32,6 +32,8 @@ class Game {
 		int windowHeight, windowWidth;
 		int device;
 
+		void restart();
+
 		void setup();
 		void update(float x1, float y1, bool IsTouch, float accx, float accy);
 		void movePlayer(float x1, float y1);

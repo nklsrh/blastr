@@ -26,8 +26,8 @@ void Glados::setup(int numberOfRows, int tileSize)
 
 		players[i].setup(i, bot, playerSize, 0.6, 1);
 
-		players[i].startingPos.x = (i % (numberOfPlayers/2)) * (numberOfRows) * tileSize; //- tileSize/2;
-		players[i].startingPos.y = floor(i % numberOfPlayers/2) * (numberOfRows) * tileSize;// - tileSize/2;
+		players[i].startingPos.x = (i % (numberOfPlayers/2)) * (numberOfRows) * tileSize;
+		players[i].startingPos.y = floor(i % numberOfPlayers/2) * (numberOfRows) * tileSize;
 
 		players[i].reset();
 	}

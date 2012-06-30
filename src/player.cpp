@@ -45,6 +45,19 @@ void Player::tiles(Environment& env)
 			env.tiles[i].HasPlayer[index] = true;
 		}
 	}
+
+	switch(env.tiles[currentTile].type)
+	{
+		case SAND:
+			vel += (env.tiles[currentTile].pos - pos) * 0.01;
+		break;
+		case GLASS:
+			acc *= 1.2;
+		break;
+		case HOLE:
+			IsOnArena = false;
+		break;
+	}
 }
 //--------------------------------------------------------------
 void Player::physics()
@@ -60,28 +73,41 @@ void Player::physics()
 	{
 		zPos--;
 	}
+	else
+	{
+		zPos = 0;
+	}
 }
 //--------------------------------------------------------------
 void Player::checkOnArena(Environment& env)
 {
+	double marginOfError;
+	if(index != 0)
+	{
+		marginOfError = 0.02;
+	}
+	else
+	{
+		marginOfError = 0.1;
+	}
     //LEFT
-    if(pos.x < env.tiles[0].pos.x - env.tileSize * 0.85){
+    if(pos.x < env.tiles[0].pos.x - env.tileSize/2 - env.tileSize * marginOfError){
       IsOnArena = false;
     }
     //RIGHT
-    if(pos.x > env.tiles[env.numberOfTiles - 1].pos.x + env.tileSize * 0.85){
-      IsOnArena = false;
-    }
-    //BOTTOM
-    if(pos.y < env.tiles[env.numberOfTiles - 1].pos.y - env.tileSize * 0.85){
+    if(pos.x > env.tiles[env.numberOfTiles - 1].pos.x + env.tileSize/2 + env.tileSize * marginOfError){
       IsOnArena = false;
     }
     //TOP
-    if(pos.y > env.tiles[0].pos.y + env.tileSize * 0.85){
+    if(pos.y < env.tiles[env.numberOfTiles - 1].pos.y - env.tileSize/2 - env.tileSize * marginOfError){
+      IsOnArena = false;
+    }
+    //BOTTOM
+    if(pos.y > env.tiles[0].pos.y + env.tileSize/2 + env.tileSize/2 * marginOfError){
       IsOnArena = false;
     }
 
-    if(!IsOnArena && zPos < -20){
+    if(!IsOnArena && zPos < -100){
       reset();
     }
 }
@@ -92,7 +118,7 @@ void Player::blastCollisions(BlastCollection& b)
 	{
 		if(b.blasts[i].pos.distance(pos) < b.blasts[i].radius)
 		{
-			if(index == 0 && i == 0)
+			if(index == 0 && i == 0 && !IsOnArena)
 			{
 				//vel += b.blasts[i].vel * b.blasts[i].str * 2;
 			}
@@ -134,7 +160,7 @@ void Player::apprehension(int numberOfPlayers, Player players[], BlastCollection
 		{
 			if(i != index)
 			{
-				if(pos.distance(players[i].pos) < aggression * size * 10)
+				if(pos.distance(players[i].pos) < aggression * size * 10 && players[i].IsOnArena)
 				{
 					chosenTarget = i;
 				}
@@ -197,20 +223,25 @@ void Player::performBlast(BlastCollection& b, ofVec2f inpTouch)
 //--------------------------------------------------------------
 void Player::input(float x, float y)
 {
-	inpAcc.x = x;
-	inpAcc.y = y;
+	if(IsOnArena)
+	{
+		inpAcc.x = x;
+		inpAcc.y = y;
 
-	if(x > 0){
-		right(0.4 * aggression);
-	}
-	if(x < 0){
-		left(0.4 * aggression);
-	}
-	if(y > 0){
-		down(0.4 * aggression);
-	}
-	if(y < 0){
-		up(0.4 * aggression);
+	//	if(x > 0){
+	//		right(0.4 * aggression);
+	//	}
+	//	if(x < 0){
+	//		left(0.4 * aggression);
+	//	}
+	//	if(y > 0){
+	//		down(0.4 * aggression);
+	//	}
+	//	if(y < 0){
+	//		up(0.4 * aggression);
+	//	}
+
+		acc += inpAcc * aggression * 0.4;
 	}
 }
 //--------------------------------------------------------------

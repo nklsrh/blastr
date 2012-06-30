@@ -3,12 +3,14 @@
 
 void testApp::setup()
 {
-	// Setup multitouch input listener
-	ofRegisterTouchEvents(this);
 	ofEnableAlphaBlending();
 	ofBackground(40,40,40);
+
 	ofSetFrameRate(60);
 
+	// Setup multitouch input listener
+	ofRegisterTouchEvents(this);
+	sensitivity = 0.2;
 	ofxAccelerometer.setup();
 
 	game.setup();
@@ -17,7 +19,7 @@ void testApp::setup()
 //--------------------------------------------------------------
 void testApp::update()
 {
-	game.update(x1, y1, IsTouch, ofxAccelerometer.getForce().x, ofxAccelerometer.getForce().y);
+	game.update(x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity));
 }
 
 //--------------------------------------------------------------

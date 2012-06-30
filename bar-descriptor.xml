@@ -43,7 +43,7 @@
    
     <initialWindow>
         <aspectRatio>landscape</aspectRatio>
-        <autoOrients>false</autoOrients>
+        <autoOrients>true</autoOrients>
         <systemChrome>none</systemChrome>
         <transparent>false</transparent>
     </initialWindow>
@@ -56,40 +56,45 @@
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Device-Debug/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/TouchControlOverlay/libPlayBook/Device-Debug/libTouchControlOverlay.so}" type="Qnx/Elf">lib/libTouchControlOverlay.so</asset>
        <asset path="Device-Debug/blast" entry="true" type="Qnx/Elf">blast</asset>
-       	  <asset path="tile_purple_128.png">tile_purple_128.png</asset>
-	      <asset path="tile_white_128.png">tile_white_128.png</asset>
-	      <asset path="tile_goal_128.png">tile_goal_128.png</asset>
-	      <asset path="tile_sand_128.png">tile_sand_128.png</asset>
-		  <asset path="hydrogen.png">hydrogen.png</asset>
-		  <asset path="backdrop.png">backdrop.png</asset>
-		  <asset path="verdana.ttf">verdana.ttf</asset>
+			<asset path="promo.png">promo.png</asset>
+			<asset path="tile_glass_128.png">tile_glass_128.png</asset>
+			<asset path="tile_white_128.png">tile_white_128.png</asset>
+			<asset path="tile_goal_128.png">tile_goal_128.png</asset>
+			<asset path="tile_sand_128.png">tile_sand_128.png</asset>
+			<asset path="tile_spawn_128.png">tile_spawn_128.png</asset>
+			<asset path="hydrogen.png">hydrogen.png</asset>
+			<asset path="backdrop.png">backdrop.png</asset>
+			<asset path="verdana.ttf">verdana.ttf</asset>
     </configuration>
     <configuration id="com.qnx.qcc.configuration.exe.release.2096755720" name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Device-Release/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/TouchControlOverlay/libPlayBook/Device-Release/libTouchControlOverlay.so}" type="Qnx/Elf">lib/libTouchControlOverlay.so</asset>
        <asset path="Device-Release/blast" entry="true" type="Qnx/Elf">blast</asset>
-       	  <asset path="tile_purple_128.png">tile_purple_128.png</asset>
-	      <asset path="tile_white_128.png">tile_white_128.png</asset>
-	      <asset path="tile_goal_128.png">tile_goal_128.png</asset>
-	      <asset path="tile_sand_128.png">tile_sand_128.png</asset>
-		  <asset path="hydrogen.png">hydrogen.png</asset>
-		  <asset path="backdrop.png">backdrop.png</asset>
-		  <asset path="verdana.ttf">verdana.ttf</asset>
+			<asset path="promo.png">promo.png</asset>
+			<asset path="tile_glass_128.png">tile_glass_128.png</asset>
+			<asset path="tile_white_128.png">tile_white_128.png</asset>
+			<asset path="tile_goal_128.png">tile_goal_128.png</asset>
+			<asset path="tile_sand_128.png">tile_sand_128.png</asset>
+			<asset path="tile_spawn_128.png">tile_spawn_128.png</asset>
+			<asset path="hydrogen.png">hydrogen.png</asset>
+			<asset path="backdrop.png">backdrop.png</asset>
+			<asset path="verdana.ttf">verdana.ttf</asset>
     </configuration>
     <configuration id="com.qnx.qcc.configuration.exe.debug.886947137" name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Simulator-Debug/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/TouchControlOverlay/libPlayBook/Simulator-Debug/libTouchControlOverlay.so}" type="Qnx/Elf">lib/libTouchControlOverlay.so</asset>
        <asset path="Simulator-Debug/blast" entry="true" type="Qnx/Elf">blast</asset>
-       	  <asset path="tile_purple_128.png">tile_purple_128.png</asset>
-	      <asset path="tile_white_128.png">tile_white_128.png</asset>
-	      <asset path="tile_goal_128.png">tile_goal_128.png</asset>
-	      <asset path="tile_sand_128.png">tile_sand_128.png</asset>
-		  <asset path="hydrogen.png">hydrogen.png</asset>
-		  <asset path="backdrop.png">backdrop.png</asset>
-		  <asset path="verdana.ttf">verdana.ttf</asset>
-		  
+			<asset path="promo.png">promo.png</asset>
+			<asset path="tile_glass_128.png">tile_glass_128.png</asset>
+			<asset path="tile_white_128.png">tile_white_128.png</asset>
+			<asset path="tile_goal_128.png">tile_goal_128.png</asset>
+			<asset path="tile_sand_128.png">tile_sand_128.png</asset>
+			<asset path="tile_spawn_128.png">tile_spawn_128.png</asset>
+			<asset path="hydrogen.png">hydrogen.png</asset>
+			<asset path="backdrop.png">backdrop.png</asset>
+			<asset path="verdana.ttf">verdana.ttf</asset>		  
     </configuration>
     
     <!--  The icon for the application, which should be 86x86. -->
@@ -98,7 +103,7 @@
     </icon>
     
     <!--  The splash screen that will appear when your application is launching. Should be 1024x600. -->
-    <!-- <splashscreen></splashscreen> -->
+    <splashscreen>promo.png</splashscreen>
 
     <!-- Request permission to execute native code.  Required for native applications. -->
     <action system="true">run_native</action>
