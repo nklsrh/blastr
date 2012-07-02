@@ -6,9 +6,9 @@
  */
 #include "game.h"
 
-void Game::setup()
+void Game::setup(int gameplayDevice)
 {
-	device = DEV_ALPHA;
+	device = gameplayDevice;
 
 	if(device == DEV_ALPHA)
 	{

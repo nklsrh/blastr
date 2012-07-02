@@ -12,13 +12,17 @@ void Control::setup()
 	ofEnableAlphaBlending();
 	ofBackground(40,40,40);
 	ofSetFrameRate(60);
+	// Setup multitouch input listener
+	ofRegisterTouchEvents(this);
+	sensitivity = 0.2;
+	ofxAccelerometer.setup();
 
-	menuSystem.setup(game);
+	menuSystem.setup(game, DEV_ALPHA);
 }
 
 void Control::update()
 {
-	menuSystem.update();
+	menuSystem.update(game);
 	if(menuSystem.IsInGame)
 	{
 		game.update(x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity));

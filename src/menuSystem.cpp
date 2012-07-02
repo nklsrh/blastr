@@ -8,13 +8,23 @@
 
 #include "menuSystem.h"
 
-void MenuSystem::setup(Game& game)
+void MenuSystem::setup(Game& game, int gameplayDevice)
 {
 	ofTrueTypeFont::setGlobalDpi(72);
 	ofRegisterTouchEvents(this);
 
-	deviceWidth = 1024;
-	deviceHeight = 600;
+	device = gameplayDevice;
+	switch(device)
+	{
+		case DEV_ALPHA:
+			deviceWidth = 1280;
+			deviceHeight = 768;
+		break;
+		case PLAYBOOK:
+			deviceWidth = 1024;
+			deviceHeight = 600;
+		break;
+	}
 
 	// one font to rule them all
 	font.loadFont(ofToDataPath("", true) + "/app/native/verdana.ttf", 26, true, true);
@@ -22,7 +32,6 @@ void MenuSystem::setup(Game& game)
 	font.setLetterSpacing(1.037);
 
 	IsInGame = false;
-	activeGame = game;
 //	buttonBack.loadImage(ofToDataPath("", true) + "/app/native/images/buttonBack.png");
 //	buttonPlay.loadImage(ofToDataPath("", true) + "/app/native/images/buttonPlay.png");
 //	buttonOptions.loadImage(ofToDataPath("", true) + "/app/native/images/buttonOptions.png");
@@ -44,11 +53,12 @@ void MenuSystem::setup(Game& game)
 //	buttonPlus.loadImage(ofToDataPath("", true) + "/app/native/images/button+.png");
 //	buttonMinus.loadImage(ofToDataPath("", true) + "/app/native/images/button-.png");
 
-	menu_main.setup(menu_MAIN);
-	menu_startGame.setup(menu_STARTGAME);
-	menu_inGame.setup(menu_INGAME);
+	menu_main.setup(menu_MAIN, deviceWidth, deviceHeight);
+	menu_startGame.setup(menu_STARTGAME, deviceWidth, deviceHeight);
+	menu_inGame.setup(menu_INGAME, deviceWidth, deviceHeight);
 	//we set active Menu
 	activeMenu = menu_main;
+
 	activeMenu.menuTransition = 1;
 
 	activeMenu.menuOffset = deviceHeight;
@@ -57,7 +67,7 @@ void MenuSystem::setup(Game& game)
 //--------------------------------------------------------------------------------
 
 // louie's magnificent menu transition system, untouched
-void MenuSystem::update() {
+void MenuSystem::update(Game& game) {
 	//ofBackground(240);
 	if (activeMenu.menuTransition == 1) {
 		activeMenu.menuOffset = activeMenu.menuOffset / 2;
@@ -76,7 +86,7 @@ void MenuSystem::update() {
 			if(activeMenu.name == menu_INGAME)
 			{
 				IsInGame = true;
-				activeGame.setup();
+				game.setup(device);
 			}
 		}
 	}
@@ -135,23 +145,23 @@ void MenuSystem::touchDoubleTap(ofTouchEventArgs &touch){}
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // this is where you specify all the buttons
-void Menu::setup(MenuName menuName)
+void Menu::setup(MenuName menuName, int deviceWidth, int deviceHeight)
 {
 	this->name = menuName;
 	switch(menuName)
 	{
 		case menu_MAIN:
 			buttons[0].IsShown = true;
-			buttons[0].rect = ofRectangle(1024/2 - 100, 600/2 - 50, 200, 100);	//just centering it, is all
+			buttons[0].rect = ofRectangle(deviceWidth * 0.7, deviceHeight * 0.5, deviceWidth * 0.2, deviceHeight * 0.2);	//just centering it, is all
 			buttons[0].img.loadImage(ofToDataPath("", true) + "/app/native/buttonPlay.png");
 			this->itemCount = 1;
 		break;
 		case menu_STARTGAME:
 			buttons[0].IsShown = true;
-			buttons[0].rect = ofRectangle(1024/2 - 50, 600/2 - 50, 200, 100);
+			buttons[0].rect = ofRectangle(deviceWidth * 0.7, deviceHeight * 0.4, deviceWidth * 0.2, deviceHeight * 0.2);
 			buttons[0].img.loadImage(ofToDataPath("", true) + "/app/native/buttonPlay.png");
 			buttons[1].IsShown = true;
-			buttons[1].rect = ofRectangle(500, 400, 100, 40);	//just centering it, is all
+			buttons[1].rect = ofRectangle(deviceWidth * 0.7, deviceHeight * 0.7, deviceWidth * 0.2, deviceHeight * 0.2);	//just centering it, is all
 			buttons[1].img.loadImage(ofToDataPath("", true) + "/app/native/buttonBack.png");
 			this->itemCount = 2;
 		break;

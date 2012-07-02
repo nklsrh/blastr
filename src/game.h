@@ -35,7 +35,7 @@ class Game {
 
 		void restart();
 
-		void setup();
+		void setup(int gameplayDevice);
 		void update(float x1, float y1, bool IsTouch, float accx, float accy);
 		void movePlayer(float x1, float y1);
 		void playerBlast(float x1, float y1, bool IsTouch);

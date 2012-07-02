@@ -46,7 +46,7 @@ struct Menu
 	Button buttons[10];
 	Menu* nextMenu;
 
-	void setup(MenuName menuName);
+	void setup(MenuName menuName, int deviceWidth, int deviceHeight);
 	void draw();
 	void touchUp(float x, float y);
 };
@@ -54,10 +54,8 @@ struct Menu
 class MenuSystem
 {
 	public:
-		Game activeGame;
-
-		void setup(Game& game);
-		void update();
+		void setup(Game& game, int gameplayDevice);
+		void update(Game& game);
 		void draw();
 
 		void touchDown(ofTouchEventArgs &touch);
@@ -67,6 +65,8 @@ class MenuSystem
 		void touchDoubleTap(ofTouchEventArgs &touch);
 
 		ofTrueTypeFont font;
+
+		int device; // PLAYBOOK, DEV_ALPHA
 
 		int deviceWidth;
 		int deviceHeight;
