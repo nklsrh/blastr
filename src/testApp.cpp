@@ -13,19 +13,22 @@ void testApp::setup()
 	sensitivity = 0.2;
 	ofxAccelerometer.setup();
 
-	game.setup();
+	control.setup();
+	//game.setup();
 }
 
 //--------------------------------------------------------------
 void testApp::update()
 {
-	game.update(x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity));
+	control.update();
+	//game.update(x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity));
 }
 
 //--------------------------------------------------------------
 void testApp::draw()
 {
-	game.draw();
+	control.draw();
+	//game.draw();
 }
 
 

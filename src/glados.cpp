@@ -17,14 +17,14 @@ void Glados::setup(int numberOfRows, int tileSize)
 		if(i != 0)
 		{
 			bot = true;
-			players[i].aggression = 0.15;
+			players[i].aggression = ofRandom(0.1, 0.9);
 		}
 		else
 		{
 			players[i].aggression = 1;
 		}
 
-		players[i].setup(i, bot, playerSize, 0.6, 1);
+		players[i].setup(i, bot, playerSize, 1);
 
 		players[i].startingPos.x = (i % (numberOfPlayers/2)) * (numberOfRows - 1) * tileSize + tileSize/2;
 		players[i].startingPos.y = floor(i % numberOfPlayers/2) * (numberOfRows - 1) * tileSize + tileSize/2;
@@ -33,6 +33,7 @@ void Glados::setup(int numberOfRows, int tileSize)
 	}
 
 	img_player.loadImage(ofToDataPath("", true) + "/app/native/hydrogen.png");
+	img_player.setAnchorPercent(0.5, 0.5);
 }
 
 //--------------------------------------------------------------
@@ -41,11 +42,14 @@ void Glados::update(Environment& env, BlastCollection& b)
 	for(int i = 0; i < numberOfPlayers; i++)
 	{
 		players[i].update(env);
-		players[i].blastCollisions(b);
 
-		if(players[i].IsBot)
+		if(players[i].IsOnArena)
 		{
-			players[i].apprehension(numberOfPlayers, players, b);
+			if(players[i].IsBot)
+			{
+				players[i].apprehension(numberOfPlayers, players, b);
+			}
+			players[i].blastCollisions(b);
 		}
 	}
 }

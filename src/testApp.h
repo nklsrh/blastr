@@ -1,18 +1,20 @@
 #ifndef TESTAPP_H_
 #define TESTAPP_H_
 
-#include "game.h"
+#include "control.h"
+
 #include "ofMain.h"
 #include "ofxQNX.h"
 #include "ofxAccelerometer.h"
 
-class testApp : public ofxQNXApp {
-	
+class testApp : public ofxQNXApp
+{
 	public:
 		float x1, y1, x2, y2, sensitivity;
 		bool IsTouch;
 
-		Game game;
+		Control control;
+		//Game game;
 
 		void touchDown(ofTouchEventArgs &touch);
 		void touchMoved(ofTouchEventArgs &touch);

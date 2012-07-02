@@ -17,7 +17,7 @@
 
 class Player {
 	public:
-		void setup(int playerIndex, bool bot, float playerSize, float aggro, float max_blastPower);
+		void setup(int playerIndex, bool bot, float playerSize, float max_blastPower);
 		void update(Environment& env);
 		void draw(Camera& cam, ofImage& img, int size);
 
@@ -40,7 +40,11 @@ class Player {
 
 		int index, chosenTarget, size, currentTile, currentTileType;
 		bool IsBot, IsApprehending, IsPreppingBlast, IsOnArena, IsScoring;
-		float aggression, maxBlastPower, score, blastStr, zPos;
+		float score, blastStr, zPos, rotation;
+
+		// ATTRIBUTES
+		float lineOfSight, aggression, maxBlastPower;
+
 		ofVec2f pos, startingPos, vel, acc, inpAcc, inpTouch, target, dirToGoal, blastVel;	//inp = input value, in x and y
 };
 

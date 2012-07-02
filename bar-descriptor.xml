@@ -43,66 +43,65 @@
    
     <initialWindow>
         <aspectRatio>landscape</aspectRatio>
-        <autoOrients>true</autoOrients>
+        <autoOrients>false</autoOrients>
         <systemChrome>none</systemChrome>
         <transparent>false</transparent>
     </initialWindow>
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
+    <asset path="assets/chars/hydrogen.png">hydrogen.png</asset>
+    <asset path="assets/env/backdrop.png">backdrop.png</asset>
+    <asset path="assets/env/tile_glass_128.png">tile_glass_128.png</asset>
+    <asset path="assets/env/tile_goal_128.png">tile_goal_128.png</asset>
+    <asset path="assets/env/tile_sand_128.png">tile_sand_128.png</asset>
+    <asset path="assets/env/tile_spawn_128.png">tile_spawn_128.png</asset>
+    <asset path="assets/env/tile_white_128.png">tile_white_128.png</asset>
+    <asset path="assets/fonts/verdana.ttf">verdana.ttf</asset>
+    <asset path="assets/fonts/verdana2.ttf">verdana2.ttf</asset>
+    <asset path="assets/menus/bg/bgCredits.png">bgCredits.png</asset>
+    <asset path="assets/menus/bg/bgMain.png">bgMain.png</asset>
+    <asset path="assets/menus/bg/bgMyBot.png">bgMyBot.png</asset>
+    <asset path="assets/menus/bg/bgOptions.png">bgOptions.png</asset>
+    <asset path="assets/menus/bg/bgPlay.png">bgPlay.png</asset>
+    <asset path="assets/menus/bg/bgQuickMatch.png">bgQuickMatch.png</asset>
+    <asset path="assets/menus/bg/bgTournament.png">bgTournament.png</asset>
+    <asset path="assets/menus/bg/bgUpgrades.png">bgUpgrades.png</asset>
+    <asset path="assets/menus/buttons/button-.png">button-.png</asset>
+    <asset path="assets/menus/buttons/button+.png">button+.png</asset>
+    <asset path="assets/menus/buttons/buttonBack.png">buttonBack.png</asset>
+    <asset path="assets/menus/buttons/buttonCredits.png">buttonCredits.png</asset>
+    <asset path="assets/menus/buttons/buttonMyBot.png">buttonMyBot.png</asset>
+    <asset path="assets/menus/buttons/buttonNewGame.png">buttonNewGame.png</asset>
+    <asset path="assets/menus/buttons/buttonOptions.png">buttonOptions.png</asset>
+    <asset path="assets/menus/buttons/buttonPlay.png">buttonPlay.png</asset>
+    <asset path="assets/menus/buttons/buttonQuickMatch.png">buttonQuickMatch.png</asset>
+    <asset path="assets/menus/buttons/buttonTournament.png">buttonTournament.png</asset>
+    <asset path="assets/menus/buttons/buttonUpgrades.png">buttonUpgrades.png</asset>
     <asset path="assets/promo/icon.png">icon.png</asset>
+    <asset path="assets/promo/promo.png">promo.png</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.2136424254" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Device-Debug/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/TouchControlOverlay/libPlayBook/Device-Debug/libTouchControlOverlay.so}" type="Qnx/Elf">lib/libTouchControlOverlay.so</asset>
        <asset path="Device-Debug/blast" entry="true" type="Qnx/Elf">blast</asset>
-			<asset path="assets/promo/promo.png">promo.png</asset>
-			<asset path="assets/promo/icon.png">icon.png</asset>
-			<asset path="assets/env/tile_glass_128.png">tile_glass_128.png</asset>
-			<asset path="assets/env/tile_white_128.png">tile_white_128.png</asset>
-			<asset path="assets/env/tile_goal_128.png">tile_goal_128.png</asset>
-			<asset path="assets/env/tile_sand_128.png">tile_sand_128.png</asset>
-			<asset path="assets/env/tile_spawn_128.png">tile_spawn_128.png</asset>
-			<asset path="assets/chars/hydrogen.png">hydrogen.png</asset>
-			<asset path="assets/env/backdrop.png">backdrop.png</asset>
-			<asset path="assets/fonts/verdana.ttf">verdana.ttf</asset>
     </configuration>
     <configuration id="com.qnx.qcc.configuration.exe.release.2096755720" name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Device-Release/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/TouchControlOverlay/libPlayBook/Device-Release/libTouchControlOverlay.so}" type="Qnx/Elf">lib/libTouchControlOverlay.so</asset>
        <asset path="Device-Release/blast" entry="true" type="Qnx/Elf">blast</asset>
-			<asset path="assets/promo/promo.png">promo.png</asset>
-			<asset path="assets/promo/icon.png">icon.png</asset>
-			<asset path="assets/env/tile_glass_128.png">tile_glass_128.png</asset>
-			<asset path="assets/env/tile_white_128.png">tile_white_128.png</asset>
-			<asset path="assets/env/tile_goal_128.png">tile_goal_128.png</asset>
-			<asset path="assets/env/tile_sand_128.png">tile_sand_128.png</asset>
-			<asset path="assets/env/tile_spawn_128.png">tile_spawn_128.png</asset>
-			<asset path="assets/chars/hydrogen.png">hydrogen.png</asset>
-			<asset path="assets/env/backdrop.png">backdrop.png</asset>
-			<asset path="assets/fonts/verdana.ttf">verdana.ttf</asset>
     </configuration>
     <configuration id="com.qnx.qcc.configuration.exe.debug.886947137" name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Simulator-Debug/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/TouchControlOverlay/libPlayBook/Simulator-Debug/libTouchControlOverlay.so}" type="Qnx/Elf">lib/libTouchControlOverlay.so</asset>
        <asset path="Simulator-Debug/blast" entry="true" type="Qnx/Elf">blast</asset>
-			<asset path="assets/promo/promo.png">promo.png</asset>
-			<asset path="assets/promo/icon.png">icon.png</asset>
-			<asset path="assets/env/tile_glass_128.png">tile_glass_128.png</asset>
-			<asset path="assets/env/tile_white_128.png">tile_white_128.png</asset>
-			<asset path="assets/env/tile_goal_128.png">tile_goal_128.png</asset>
-			<asset path="assets/env/tile_sand_128.png">tile_sand_128.png</asset>
-			<asset path="assets/env/tile_spawn_128.png">tile_spawn_128.png</asset>
-			<asset path="assets/chars/hydrogen.png">hydrogen.png</asset>
-			<asset path="assets/env/backdrop.png">backdrop.png</asset>
-			<asset path="assets/fonts/verdana.ttf">verdana.ttf</asset>		  
     </configuration>
     
     <!--  The icon for the application, which should be 86x86. -->
     <icon>
-        <image>icon.png</image>
+        <image>tile_spawn_128.png</image>
     </icon>
     
     <!--  The splash screen that will appear when your application is launching. Should be 1024x600. -->

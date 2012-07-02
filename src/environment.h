@@ -21,7 +21,7 @@
 
 class Environment {
 	public:
-		int tileSize, numberOfRows, numberOfTiles, windowHeight, windowWidth;
+		int tileSize, numberOfRows, numberOfTiles, windowHeight, windowWidth, hillIntervalTime, hillIntervalLength, nextHillTile;
 		float zoomLevel;
 
 		Tile tiles[50];
@@ -32,6 +32,9 @@ class Environment {
 		void setup();
 		void update();
 		void draw(Camera& cam);
+
+		void hillMovementTimer();
+		void moveHill();
 };
 
 #endif /* ENVIRONMENT_H_ */

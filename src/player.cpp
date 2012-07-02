@@ -6,7 +6,7 @@
  */
 #include "player.h"
 
-void Player::setup(int playerIndex, bool bot, float playerSize, float aggro, float max_blastPower)
+void Player::setup(int playerIndex, bool bot, float playerSize, float max_blastPower)
 {
 	index = playerIndex;
 	IsBot = bot;
@@ -14,7 +14,9 @@ void Player::setup(int playerIndex, bool bot, float playerSize, float aggro, flo
 	chosenTarget = -1;
 	size = playerSize;
 	maxBlastPower = aggression * 2;
+	lineOfSight = aggression * 1.3 * 20;
 	blastStr = 0;
+	score = 0;
 	IsPreppingBlast = false;
 }
 void Player::reset()
@@ -22,6 +24,7 @@ void Player::reset()
 	pos = startingPos;
 	IsOnArena = true;
 	IsScoring = false;
+	rotation = 0;
 }
 //--------------------------------------------------------------
 void Player::update(Environment& env)
@@ -50,7 +53,7 @@ void Player::tiles(Environment& env)
 	switch(env.tiles[currentTile].type)
 	{
 		case SAND:
-			vel += (env.tiles[currentTile].pos - pos) * 0.05;
+			vel += (env.tiles[currentTile].pos - pos) * 0.04 * aggression;
 			IsScoring = false;
 			currentTileType = SAND;
 		break;
@@ -83,6 +86,15 @@ void Player::physics()
 	acc *= 0.88;
 
 	vel.interpolate(ofVec2f(0, 0), 0.6);
+
+    if (vel.y > 0) //FOR POSITIVE VALUES OF Y, FIRST 2 QUADRANTS OF MOTION, USING ASTC
+    {
+        rotation = (180/3.14 * atan(vel.x / -vel.y));
+    }
+    else//FOR NEGATIVE VALUES OF Y, NEXT 2 QUADRANTS OF MOTION
+    {
+        rotation = (180/3.14 * atan(vel.x / -vel.y)) + 180;
+    }
 
 	if(!IsOnArena)
 	{
@@ -175,7 +187,7 @@ void Player::apprehension(int numberOfPlayers, Player players[], BlastCollection
 		{
 			if(i != index)
 			{
-				if(pos.distance(players[i].pos) < aggression * size * 10 && players[i].IsOnArena)
+				if(pos.distance(players[i].pos) < lineOfSight * size  && players[i].IsOnArena)
 				{
 					chosenTarget = i;
 				}
@@ -209,7 +221,7 @@ void Player::attackTarget(ofVec2f targetPos, BlastCollection& b)
 //--------------------------------------------------------------
 void Player::prepBlast(ofVec2f input)
 {
-	if(blastStr < maxBlastPower)
+	if(blastStr < maxBlastPower && IsOnArena)
 	{
 		blastStr += aggression * 0.03;
 	}
@@ -221,15 +233,17 @@ void Player::prepBlast(ofVec2f input)
 //--------------------------------------------------------------
 void Player::performBlast(BlastCollection& b, ofVec2f inpTouch)
 {
-	if(!b.blasts[index].IsEnabled && IsPreppingBlast)
+	if(!b.blasts[index].IsEnabled && IsPreppingBlast && IsOnArena)
 	{
 		b.blasts[index].setup(index, size);
 		b.blasts[index].IsEnabled = true;
 		b.blasts[index].str = blastStr;
 		b.blasts[index].spd = 25;
 		b.blasts[index].vel = vel + inpTouch * blastStr * b.blasts[index].spd;
-		b.blasts[index].pos = pos + b.blasts[index].vel * b.blasts[index].radius * 0.9;
-		vel -= b.blasts[index].vel * 0.3;
+		b.blasts[index].pos = pos + b.blasts[index].vel * b.blasts[index].radius * 6;
+
+		acc.x = ofClamp(-b.blasts[index].vel.x * 0.5, -10, 0);
+		acc.y = ofClamp(-b.blasts[index].vel.y * 0.5, -10, 0);
 
 		IsPreppingBlast = false;
 		blastStr = 0;
@@ -289,8 +303,13 @@ void Player::draw(Camera& cam, ofImage& img, int size)
 
 	ofSetColor(255, 255, 255);
 	ofNoFill();
-	img.draw(cam.offset.x + pos.x - size/2, cam.offset.y + pos.y - size/2, size, size);
-	//ofCircle(cam.offset.x + pos.x, cam.offset.y +  pos.y, size);
+
+	ofPushMatrix();
+	ofTranslate((cam.offset.x + pos.x), (cam.offset.y + pos.y));
+	ofRotateZ(rotation);
+	img.draw(0, 0, size, size);
+	ofPopMatrix();
+
 	ofFill();
 	ofCircle((inpAcc.x * 100 + cam.offset.x + pos.x), (inpAcc.y * 100 + cam.offset.y + pos.y), size / 8);
 }

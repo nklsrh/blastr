@@ -9,15 +9,31 @@
 void Rules::setup(double gameLength)
 {
 	gameTime = gameLength;
-
+	IsGameRunning = true;
+	IsGameOver = false;
 }
 
 //--------------------------------------------------------------
 void Rules::update(Glados& g, Environment& e)
 {
-	gameTime -= ofGetLastFrameTime();
+	if(IsGameRunning)
+	{
+		checkTimer();
+		scorePlayers(g);
+	}
 }
+//--------------------------------------------------------------
+void Rules::checkTimer()
+{
+	gameTime -= ofGetLastFrameTime();
 
+	if(gameTime <= 0)
+	{
+		IsGameRunning = false;
+		IsGameOver = true;
+	}
+}
+//--------------------------------------------------------------
 void Rules::scorePlayers(Glados& g)
 {
 	for (int i = 0; i < g.numberOfPlayers; i++)

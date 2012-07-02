@@ -31,12 +31,16 @@ class Game {
 
 		int windowHeight, windowWidth;
 		int device;
+		int gameLength;
 
 		void restart();
 
 		void setup();
 		void update(float x1, float y1, bool IsTouch, float accx, float accy);
 		void movePlayer(float x1, float y1);
+		void playerBlast(float x1, float y1, bool IsTouch);
+		void endGame();
+
 		void draw();
 };
 

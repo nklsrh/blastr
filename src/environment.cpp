@@ -25,6 +25,8 @@ void Environment::setup()
 		tiles[i].setup(i, goalTile, tileSize, numberOfRows, numberOfTiles);
 		tiles[i].intervalLength = ofRandom(2000) + 500;
 	}
+
+	hillIntervalTime = 0;
 }
 
 //--------------------------------------------------------------
@@ -34,8 +36,35 @@ void Environment::update()
 	{
 		tiles[i].update();
 	}
+	hillMovementTimer();
+}
+//--------------------------------------------------------------
+void Environment::hillMovementTimer()
+{
+	if(hillIntervalTime >= hillIntervalLength)
+	{
+		moveHill();
+		hillIntervalTime = 0;
+
+		nextHillTile = floor(ofRandom(2, numberOfTiles - 2));
+		do
+		{
+			nextHillTile = floor(ofRandom(2, numberOfTiles - 2));
+		}
+		while(tiles[nextHillTile].type != NORMAL && tiles[nextHillTile].type != SPAWN);
+	}
+	else
+	{
+		hillIntervalTime++;
+	}
 }
 
+void Environment::moveHill()
+{
+	tiles[goalTile].type = NORMAL;
+	tiles[nextHillTile].type = GOAL;
+	goalTile = nextHillTile;
+}
 //--------------------------------------------------------------
 void Environment::draw(Camera& cam)
 {

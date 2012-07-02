@@ -8,7 +8,7 @@
 
 void Game::setup()
 {
-	device = PLAYBOOK;
+	device = DEV_ALPHA;
 
 	if(device == DEV_ALPHA)
 	{
@@ -22,22 +22,34 @@ void Game::setup()
 		env.windowWidth = 1024;
 		env.zoomLevel = 0.6;	//smaller is closer
 	}
-	restart();
-}
-void Game::restart()
-{
+
+	gameLength = 60;
+
 	env.numberOfRows = 7;
 	env.numberOfTiles = (env.numberOfRows * env.numberOfRows);
 	env.tileSize = env.windowHeight / env.numberOfRows / env.zoomLevel;
+	env.hillIntervalLength = gameLength * 10;
 
+	restart();
+}
+//--------------------------------------------------------------------
+void Game::restart()
+{
 	env.setup();
 	glados.setup(env.numberOfRows, env.tileSize);
 	blastCol.setup(glados.numberOfPlayers, glados.playerSize);
 	cam.setup(env.zoomLevel);
 
-	rules.setup(60);
-	//glados.players[0].pos = ofVec2f(500,500);
+	rules.setup(gameLength);
 	hud.setup(env.windowWidth, env.windowHeight);
+}
+//----------------------------------------------------------------
+void Game::endGame()
+{
+	if(rules.IsGameOver)
+	{
+		restart();
+	}
 }
 //--------------------------------------------------------------
 void Game::update(float x1, float y1, bool IsTouch, float accx, float accy)
@@ -48,15 +60,7 @@ void Game::update(float x1, float y1, bool IsTouch, float accx, float accy)
 	blastCol.update();
 	hud.update();
 
-	if(IsTouch)
-	{
-		glados.players[0].prepBlast(3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
-	}
-	else
-	{
-		glados.players[0].performBlast(blastCol, 3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
-	}
-
+	playerBlast(x1, y1, IsTouch);
 	// the accelerometers act differently on each device
 	if(device == DEV_ALPHA)
 	{
@@ -68,13 +72,28 @@ void Game::update(float x1, float y1, bool IsTouch, float accx, float accy)
 	}
 
 	cam.update(glados.players[0].pos, env.windowWidth, env.windowHeight);
+
+	endGame();
 }
 
 void Game::movePlayer(float x1, float y1)
 {
-	glados.players[0].input((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2));
-	//glados.players[0].pos.x++;
-	//glados.players[0].pos.y++;
+	if(!glados.players[0].IsBot)
+	{
+		glados.players[0].input((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2));
+	}
+}
+
+void Game::playerBlast(float x1, float y1, bool IsTouch)
+{
+	if(IsTouch)
+	{
+		glados.players[0].prepBlast(3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
+	}
+	else
+	{
+		glados.players[0].performBlast(blastCol, 3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
+	}
 }
 //--------------------------------------------------------------
 void Game::draw()
