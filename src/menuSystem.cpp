@@ -8,7 +8,7 @@
 
 #include "menuSystem.h"
 
-void MenuSystem::setup(Game& game, int gameplayDevice)
+void MenuSystem::setup(int gameplayDevice)
 {
 	ofTrueTypeFont::setGlobalDpi(72);
 	ofRegisterTouchEvents(this);
@@ -32,6 +32,7 @@ void MenuSystem::setup(Game& game, int gameplayDevice)
 	font.setLetterSpacing(1.037);
 
 	IsInGame = false;
+	IsStartGame = false;
 //	buttonBack.loadImage(ofToDataPath("", true) + "/app/native/images/buttonBack.png");
 //	buttonPlay.loadImage(ofToDataPath("", true) + "/app/native/images/buttonPlay.png");
 //	buttonOptions.loadImage(ofToDataPath("", true) + "/app/native/images/buttonOptions.png");
@@ -67,7 +68,7 @@ void MenuSystem::setup(Game& game, int gameplayDevice)
 //--------------------------------------------------------------------------------
 
 // louie's magnificent menu transition system, untouched
-void MenuSystem::update(Game& game) {
+void MenuSystem::update() {
 	//ofBackground(240);
 	if (activeMenu.menuTransition == 1) {
 		activeMenu.menuOffset = activeMenu.menuOffset / 2;
@@ -79,14 +80,20 @@ void MenuSystem::update(Game& game) {
 	else if (activeMenu.menuTransition == -1) {
 		activeMenu.menuOffset = activeMenu.menuOffset * 2;
 		if (activeMenu.menuOffset >= deviceHeight) {
+			// when we END a match
+			if(activeMenu.name == menu_INGAME)
+			{
+				IsInGame = false;
+			}
 			activeMenu.menuOffset = deviceHeight;
 			activeMenu.menuTransition = 1;
 			activeMenu = nextMenu;
-			// where do i put the code for when we actually start a match?
+			// when we actually start a match
 			if(activeMenu.name == menu_INGAME)
 			{
 				IsInGame = true;
-				game.setup(device);
+				//game.setup(device);
+				IsStartGame = true;
 			}
 		}
 	}
@@ -140,7 +147,7 @@ void MenuSystem::touchDoubleTap(ofTouchEventArgs &touch){}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////// MENU ///////////////////////////////////////////////////////
+////////////////////////////////// MENUS //////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -183,7 +190,7 @@ void Menu::draw()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////// BUTTON /////////////////////////////////////////////////////
+////////////////////////////////// BUTTONS ////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

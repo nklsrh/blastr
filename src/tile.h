@@ -23,6 +23,7 @@ class Tile {
 		ofVec2f pos;		//position
 
 		int type, index, intervalTime, intervalLength;
+		int numberOfTiles, numberOfRows;
 		bool HasPlayer[10];
 };
 

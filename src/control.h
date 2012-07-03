@@ -20,6 +20,8 @@ class Control : public ofxQNXApp {
 		MenuSystem menuSystem;
 		Game game;
 
+		int device;
+
 		float x1, y1, x2, y2, sensitivity;
 		bool IsTouch;
 

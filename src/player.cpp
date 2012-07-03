@@ -6,8 +6,9 @@
  */
 #include "player.h"
 
-void Player::setup(int playerIndex, bool bot, float playerSize, float max_blastPower)
+void Player::setup(int deviceIndex, int playerIndex, bool bot, float playerSize, float max_blastPower)
 {
+	device = deviceIndex;
 	index = playerIndex;
 	IsBot = bot;
 	IsApprehending = false;
@@ -18,6 +19,7 @@ void Player::setup(int playerIndex, bool bot, float playerSize, float max_blastP
 	blastStr = 0;
 	score = 0;
 	IsPreppingBlast = false;
+	HasControl = false;
 }
 void Player::reset()
 {
@@ -25,15 +27,19 @@ void Player::reset()
 	IsOnArena = true;
 	IsScoring = false;
 	rotation = 0;
+	HasControl = true;
 }
 //--------------------------------------------------------------
 void Player::update(Environment& env)
 {
-	if(index != 0 && IsOnArena)
+	if(IsOnArena)
 	{
-		tracking(env);
+		if(index != 0 && HasControl)
+		{
+			tracking(env);
+		}
+		tiles(env);
 	}
-	tiles(env);
 	physics();
 	checkOnArena(env);
 }
@@ -53,25 +59,30 @@ void Player::tiles(Environment& env)
 	switch(env.tiles[currentTile].type)
 	{
 		case SAND:
+			HasControl = true;
 			vel += (env.tiles[currentTile].pos - pos) * 0.04 * aggression;
 			IsScoring = false;
 			currentTileType = SAND;
 		break;
 		case GLASS:
+			HasControl = false;
 			acc *= 1.2;
 			IsScoring = false;
 			currentTileType = GLASS;
 		break;
 		case HOLE:
+			HasControl = false;
 			IsOnArena = false;
 			IsScoring = false;
 			currentTileType = HOLE;
 		break;
 		case GOAL:
+			HasControl = true;
 			IsScoring = true;
 			currentTileType = GOAL;
 		break;
 		case NORMAL:
+			HasControl = true;
 			currentTileType = NORMAL;
 			IsScoring = false;
 		break;
@@ -134,9 +145,15 @@ void Player::checkOnArena(Environment& env)
       IsOnArena = false;
     }
 
-    if(!IsOnArena && zPos < -100){
-      reset();
+    if(!IsOnArena)
+    {
+    	IsScoring = false;
     }
+
+    if(!IsOnArena && zPos < -100)
+    {
+	  reset();
+	}
 }
 //--------------------------------------------------------------
 void Player::blastCollisions(BlastCollection& b)
@@ -155,6 +172,37 @@ void Player::blastCollisions(BlastCollection& b)
 			}
 		}
 	}
+}
+//-------------------------------------------------------------
+void Player::handleInput(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy)
+{
+	if(HasControl)
+	{
+		// prepping and blasting
+		if(IsTouch)
+		{
+			prepBlast(3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
+		}
+		else
+		{
+			performBlast(b, 3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
+		}
+		// the accelerometers act differently on each device
+		if(device == DEV_ALPHA)
+		{
+			//movePlayer((-accy * env.windowWidth/2) + env.windowWidth/2, (-accx * env.windowHeight/2) + env.windowHeight/2);
+			input(-accy, -accx);
+		}
+		else if(device == PLAYBOOK)
+		{
+			//movePlayer((accx * env.windowWidth/2) + env.windowWidth/2, (-accy * env.windowHeight/2) + env.windowHeight/2);
+			input(accx, -accy);
+		}
+	}
+}
+void Player::movePlayer(float x1, float y1)
+{
+	//input((x1-(windowWidth/2))/(windowWidth/2), (y1-(windowHeight/2))/(windowWidth/2));
 }
 //--------------------------------------------------------------
 void Player::tracking(Environment& env)

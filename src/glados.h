@@ -18,13 +18,14 @@
 class Glados {
 	public:
 		int numberOfPlayers, playerSize;
+		int device;
 
 		Player players[4];
 
 		ofImage img_player;
 
-		void setup(int numberOfRows, int tileSize);
-		void update(Environment& env, BlastCollection& b);
+		void setup(int deviceIndex, int numberOfRows, int tileSize);
+		void update(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy);
 		void draw(Camera& cam);
 };
 

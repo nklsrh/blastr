@@ -6,8 +6,10 @@
  */
 #include "glados.h"
 
-void Glados::setup(int numberOfRows, int tileSize)
+void Glados::setup(int deviceIndex, int numberOfRows, int tileSize)
 {
+	this->device = deviceIndex;
+
 	playerSize = tileSize * 0.3;
 	numberOfPlayers = 4;
 
@@ -24,7 +26,7 @@ void Glados::setup(int numberOfRows, int tileSize)
 			players[i].aggression = 1;
 		}
 
-		players[i].setup(i, bot, playerSize, 1);
+		players[i].setup(device, i, bot, playerSize, 1);
 
 		players[i].startingPos.x = (i % (numberOfPlayers/2)) * (numberOfRows - 1) * tileSize + tileSize/2;
 		players[i].startingPos.y = floor(i % numberOfPlayers/2) * (numberOfRows - 1) * tileSize + tileSize/2;
@@ -37,7 +39,7 @@ void Glados::setup(int numberOfRows, int tileSize)
 }
 
 //--------------------------------------------------------------
-void Glados::update(Environment& env, BlastCollection& b)
+void Glados::update(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy)
 {
 	for(int i = 0; i < numberOfPlayers; i++)
 	{
@@ -48,6 +50,10 @@ void Glados::update(Environment& env, BlastCollection& b)
 			if(players[i].IsBot)
 			{
 				players[i].apprehension(numberOfPlayers, players, b);
+			}
+			else
+			{
+				players[i].handleInput(env, b, x1, y1, IsTouch, accx, accy);
 			}
 			players[i].blastCollisions(b);
 		}

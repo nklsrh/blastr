@@ -9,6 +9,10 @@
 
 void Tile::setup(int index, int goalTile, int size, int numberOfRows, int numberOfTiles)
 {
+	this->numberOfRows = numberOfRows;
+	this->numberOfTiles = numberOfTiles;
+	this->index = index;
+
 	if(index == goalTile)
 	{
 		type = GOAL;
@@ -41,37 +45,43 @@ void Tile::randomizeType()
 //		If it is in the NORMAL state, a Powertile is generated
 //	BUT THERE IS A 1/3 CHANCE OF IT STAYING NORMAL
 
-	if(type == NORMAL){
-		int randomInt = ofRandom(26);
+	// NEW: tiles near spawn zones never change
+	// if x is 0,1 or 5,6 && if y is 0,1 or 5,6
 
-		// BONUS TILES! //
-		switch(randomInt){
-			case 0:
-				type = HOLE;
-			break;
-			case 1:
-				type = SAND;
-			break;
-			case 2:
-				type = SAND;
-			break;
-			case 3:
-				type = GLASS;
-			break;
-			case 4:
+	if((index % numberOfRows > 1 || index % numberOfRows < 5) && (int(index / 10) % numberOfRows > 1 || int(index / 10) % numberOfRows < 5))
+	{
+		if(type == NORMAL){
+			int randomInt = ofRandom(26);
+
+			// BONUS TILES! //
+			switch(randomInt){
+				case 0:
+					type = HOLE;
+				break;
+				case 1:
+					type = SAND;
+				break;
+				case 2:
+					type = SAND;
+				break;
+				case 3:
+					type = GLASS;
+				break;
+				case 4:
+					type = NORMAL;
+				break;
+			}
+
+			// INCREASE CHANCE OF GETTING A NORMAL TILE (around 1/3)
+			if(randomInt > 4){
 				type = NORMAL;
-			break;
+			}
 		}
-
-		// INCREASE CHANCE OF GETTING A NORMAL TILE (around 1/3)
-		if(randomInt > 4){
+		else
+		{
+			//	IF it was PowerTile, change back to NORMAL state before powering up again
 			type = NORMAL;
 		}
-	}
-	else
-	{
-		//	IF it was PowerTile, change back to NORMAL state before powering up again
-		type = NORMAL;
 	}
 }
 

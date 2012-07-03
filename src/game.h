@@ -14,11 +14,9 @@
 #include "blastCollection.h"
 #include "rules.h"
 #include "hud.h"
+#include "menuSystem.h"
 
 #include "ofMain.h"
-
-#define PLAYBOOK 0
-#define DEV_ALPHA 1
 
 class Game {
 	public:
@@ -28,6 +26,7 @@ class Game {
 		Camera cam;
 		BlastCollection blastCol;
 		HUD hud;
+		MenuSystem menu;
 
 		int windowHeight, windowWidth;
 		int device;
@@ -36,10 +35,10 @@ class Game {
 		void restart();
 
 		void setup(int gameplayDevice);
-		void update(float x1, float y1, bool IsTouch, float accx, float accy);
+		void update(MenuSystem& menu, float x1, float y1, bool IsTouch, float accx, float accy);
 		void movePlayer(float x1, float y1);
 		void playerBlast(float x1, float y1, bool IsTouch);
-		void endGame();
+		void endGame(MenuSystem& menu);
 
 		void draw();
 };

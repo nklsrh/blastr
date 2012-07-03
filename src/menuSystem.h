@@ -9,8 +9,6 @@
 #ifndef MENUMAIN_H_
 #define MENUMAIN_H_
 
-#include "game.h"
-
 #include "ofMain.h"
 
 enum ButtonType
@@ -54,8 +52,8 @@ struct Menu
 class MenuSystem
 {
 	public:
-		void setup(Game& game, int gameplayDevice);
-		void update(Game& game);
+		void setup(int gameplayDevice);
+		void update();
 		void draw();
 
 		void touchDown(ofTouchEventArgs &touch);
@@ -72,7 +70,7 @@ class MenuSystem
 		int deviceHeight;
 
 		// switch this to TRUE when ready to play a match
-		bool IsInGame;
+		bool IsInGame, IsStartGame;
 
 		Menu activeMenu, nextMenu;
 

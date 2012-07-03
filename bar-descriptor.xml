@@ -58,7 +58,6 @@
     <asset path="assets/env/tile_spawn_128.png">tile_spawn_128.png</asset>
     <asset path="assets/env/tile_white_128.png">tile_white_128.png</asset>
     <asset path="assets/fonts/verdana.ttf">verdana.ttf</asset>
-    <asset path="assets/fonts/verdana2.ttf">verdana2.ttf</asset>
     <asset path="assets/menus/bg/bgCredits.png">bgCredits.png</asset>
     <asset path="assets/menus/bg/bgMain.png">bgMain.png</asset>
     <asset path="assets/menus/bg/bgMyBot.png">bgMyBot.png</asset>
@@ -101,7 +100,7 @@
     
     <!--  The icon for the application, which should be 86x86. -->
     <icon>
-        <image>tile_spawn_128.png</image>
+        <image>icon.png</image>
     </icon>
     
     <!--  The splash screen that will appear when your application is launching. Should be 1024x600. -->

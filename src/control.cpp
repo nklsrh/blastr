@@ -17,15 +17,24 @@ void Control::setup()
 	sensitivity = 0.2;
 	ofxAccelerometer.setup();
 
-	menuSystem.setup(game, DEV_ALPHA);
+	// set DEVICE HERE!
+	// choices: PLAYBOOK, DEV_ALPHA
+	device = PLAYBOOK;
+
+	menuSystem.setup(device);
 }
 
 void Control::update()
 {
-	menuSystem.update(game);
+	menuSystem.update();
+	if(menuSystem.IsStartGame)
+	{
+		game.setup(menuSystem.device);
+		menuSystem.IsStartGame = false;
+	}
 	if(menuSystem.IsInGame)
 	{
-		game.update(x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity));
+		game.update(menuSystem, x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity));
 	}
 }
 
