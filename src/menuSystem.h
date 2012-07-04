@@ -21,6 +21,11 @@ enum MenuName
 {
 	menu_MAIN,
 	menu_STARTGAME,
+	menu_MYBOT,
+	menu_CAREER,
+	menu_OPTIONS,
+	menu_UPGRADE,
+	menu_STORE,
 	menu_INGAME
 };
 
@@ -31,13 +36,14 @@ struct Button
 	bool IsShown;
 	int type;
 
-	void draw();
+	void draw(int menuOffset, int horizontalOffset);
 };
 
 struct Menu
 {
 	int menuTransition, menuOffset;
-	int align, gap;
+	int horizontalOffset; //For scrolling career event selection
+	float heightMultiplier, widthMultiplier;
 	int itemCount;
 	MenuName name;
 
@@ -45,7 +51,7 @@ struct Menu
 	Menu* nextMenu;
 
 	void setup(MenuName menuName, int deviceWidth, int deviceHeight);
-	void draw();
+	void draw(int menuOffset, int horizontalOffset);
 	void touchUp(float x, float y);
 };
 
@@ -72,10 +78,17 @@ class MenuSystem
 		// switch this to TRUE when ready to play a match
 		bool IsInGame, IsStartGame;
 
+		//For scrolling career event selection
+		ofVec2f previousTouch;
+		ofVec2f currentTouch;
+		ofVec2f initialTouch;
+
 		Menu activeMenu, nextMenu;
 
 		//list of menus in game
 		Menu menu_main, menu_startGame, menu_inGame;
+		Menu menu_myBot, menu_career, menu_options;
+		Menu menu_upgrade, menu_store;
 };
 
 #endif /* MENUMAIN_H_ */

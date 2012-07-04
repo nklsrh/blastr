@@ -23,7 +23,7 @@ void Game::setup(int gameplayDevice)
 		env.zoomLevel = 0.6;	//smaller is closer
 	}
 
-	gameLength = 10;
+	gameLength = 60;
 
 	env.numberOfRows = 7;
 	env.numberOfTiles = (env.numberOfRows * env.numberOfRows);

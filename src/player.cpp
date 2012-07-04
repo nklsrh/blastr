@@ -176,17 +176,17 @@ void Player::blastCollisions(BlastCollection& b)
 //-------------------------------------------------------------
 void Player::handleInput(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy)
 {
+	// prepping and blasting
+	if(IsTouch)
+	{
+		prepBlast(3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
+	}
+	else
+	{
+		performBlast(b, 3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
+	}
 	if(HasControl)
 	{
-		// prepping and blasting
-		if(IsTouch)
-		{
-			prepBlast(3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
-		}
-		else
-		{
-			performBlast(b, 3 * ofVec2f((x1-(env.windowWidth/2))/(env.windowWidth/2), (y1-(env.windowHeight/2))/(env.windowWidth/2)));
-		}
 		// the accelerometers act differently on each device
 		if(device == DEV_ALPHA)
 		{

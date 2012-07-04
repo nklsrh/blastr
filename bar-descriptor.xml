@@ -79,6 +79,11 @@
     <asset path="assets/menus/buttons/buttonUpgrades.png">buttonUpgrades.png</asset>
     <asset path="assets/promo/icon.png">icon.png</asset>
     <asset path="assets/promo/promo.png">promo.png</asset>
+    <asset path="assets/menus/buttons/bar.png">bar.png</asset>
+    <asset path="assets/menus/buttons/buttonCareer.png">buttonCareer.png</asset>
+    <asset path="assets/menus/buttons/buttonEvent.png">buttonEvent.png</asset>
+    <asset path="assets/menus/buttons/buttonItem.png">buttonItem.png</asset>
+    <asset path="assets/menus/buttons/buttonStore.png">buttonStore.png</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.2136424254" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Device-Debug/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>
