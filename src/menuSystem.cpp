@@ -32,6 +32,7 @@ void MenuSystem::setup(int gameplayDevice)
 	font.setLetterSpacing(1.037);
 
 	IsInGame = false;
+	IsStartGame = false;
 //	buttonBack.loadImage(ofToDataPath("", true) + "/app/native/images/buttonBack.png");
 //	buttonPlay.loadImage(ofToDataPath("", true) + "/app/native/images/buttonPlay.png");
 //	buttonOptions.loadImage(ofToDataPath("", true) + "/app/native/images/buttonOptions.png");
@@ -85,21 +86,31 @@ void MenuSystem::update() {
 	else if (activeMenu.menuTransition == -1) {
 		activeMenu.menuOffset = activeMenu.menuOffset * 2;
 		if (activeMenu.menuOffset >= deviceHeight) {
-			// when we END a match
+			// toogle off
 			if(activeMenu.name == menu_INGAME)
 			{
 				IsInGame = false;
 			}
-			activeMenu.menuOffset = deviceHeight;
-			activeMenu.menuTransition = 1;
 			activeMenu = nextMenu;
-			// when we actually start a match
+			activeMenu.menuTransition = 1;
+			activeMenu.menuOffset = deviceHeight;
+			// set up a READY FOR MATCH flag for control to see
 			if(activeMenu.name == menu_INGAME)
 			{
 				IsInGame = true;
-				//game.setup(device);
 				IsStartGame = true;
 			}
+		}
+	}
+	//commence snapping
+	if (activeMenu.name == menu_CAREER && activeMenu.currentSnap != 0)
+	{
+		//ease in. wtb lerp
+		activeMenu.currentSnap /= 2;
+		activeMenu.horizontalOffset -= activeMenu.currentSnap;
+		if (abs(activeMenu.currentSnap) <= 1)
+		{
+			activeMenu.currentSnap = 0;
 		}
 	}
 }
@@ -115,10 +126,29 @@ void MenuSystem::draw()
 
 void MenuSystem::touchUp(ofTouchEventArgs &touch)
 {
-	//this->activeMenu.touchUp(touch.x, touch.y);
+	for (int x = 0; x < activeMenu.itemCount; x++)
+	{
+		activeMenu.buttons[x].isDown = false;
+	}
+	if (activeMenu.name == menu_CAREER)
+	{
+		//snapping to selection closest to centre of screen
+		int min = deviceWidth;
+		for (int x = 0; x < activeMenu.itemCount - 1; x++)
+		{
+			//finding the closest selection to centre of screen, (deviceWidth * 0.4) is the distance between each event button, change it as needed
+			if (abs(activeMenu.buttons[x].rect.x + activeMenu.horizontalOffset - (deviceWidth * 0.4)) < min)
+			{
+				//sets the amount needed to snap to the distance of closest selection to centre of screen
+				min = abs(activeMenu.buttons[x].rect.x + activeMenu.horizontalOffset - (deviceWidth * 0.4));
+				activeMenu.snapGoal = activeMenu.buttons[x].rect.x + activeMenu.horizontalOffset - (deviceWidth * 0.4);
+			}
+		}
+		activeMenu.currentSnap = activeMenu.snapGoal;
+	}
 
 	//Check to prevent scrolling onto a button and end up triggering touchUp on that button
-	if (abs(initialTouch.x - touch.x) < 40 * (deviceWidth/1024) && abs(initialTouch.y - touch.y) < 40 * (deviceHeight/600))
+	if (abs(initialTouch.x - touch.x) < 30 && abs(initialTouch.y - touch.y) < 30)
 	{
 		switch(activeMenu.name)
 		{
@@ -232,6 +262,14 @@ void MenuSystem::touchDown(ofTouchEventArgs &touch)
 	currentTouch.x = touch.x;
 	initialTouch.y = touch.y;
 	currentTouch.y = touch.y;
+
+	for (int x = 0; x < activeMenu.itemCount; x++)
+	{
+		if (activeMenu.buttons[x].rect.inside(touch.x, touch.y))
+		{
+			activeMenu.buttons[x].isDown = true;
+		}
+	}
 }
 
 void MenuSystem::touchMoved(ofTouchEventArgs &touch)
@@ -239,11 +277,12 @@ void MenuSystem::touchMoved(ofTouchEventArgs &touch)
 	previousTouch = currentTouch;
 	currentTouch.x = touch.x;
 	currentTouch.y = touch.y;
+	//scrolling shit
 	if (activeMenu.name == menu_CAREER)
 	{
 		activeMenu.horizontalOffset += currentTouch.x - previousTouch.x ;
-		if (activeMenu.horizontalOffset > 0) activeMenu.horizontalOffset = 0;
-		else if (activeMenu.horizontalOffset < -1.25 * deviceWidth) activeMenu.horizontalOffset = -1.25 * deviceWidth;
+		//if (activeMenu.horizontalOffset > 0) activeMenu.horizontalOffset = 0;
+		//else if (activeMenu.horizontalOffset < -1.25 * deviceWidth) activeMenu.horizontalOffset = -1.25 * deviceWidth;
 	}
 	else if (activeMenu.name == menu_STORE)
 	{
@@ -282,8 +321,22 @@ void Menu::setup(MenuName menuName, int deviceWidth, int deviceHeight)
 			buttons[3].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
 			buttons[3].img.loadImage(ofToDataPath("", true) + "/app/native/buttonMyBot.png");
 			buttons[4].IsShown = false;
-			buttons[4].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttons[4].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.4, 0, 0); //fake back button with 0 size
 			buttons[4].img.loadImage(ofToDataPath("", true) + "/app/native/buttonMyBot.png");
+
+			//touchdown mouse button images (currently just the same placeholder image for all buttons)
+			buttonsDown[0].IsShown = true;
+			buttonsDown[0].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.55, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[0].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[1].IsShown = true;
+			buttonsDown[1].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.7, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[1].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[2].IsShown = true;
+			buttonsDown[2].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.85, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[2].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[3].IsShown = true;
+			buttonsDown[3].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[3].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
 			this->itemCount = 5;
 		break;
 		case menu_STARTGAME:
@@ -296,6 +349,16 @@ void Menu::setup(MenuName menuName, int deviceWidth, int deviceHeight)
 			buttons[2].IsShown = true;
 			buttons[2].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
 			buttons[2].img.loadImage(ofToDataPath("", true) + "/app/native/buttonBack.png");
+
+			buttonsDown[0].IsShown = true;
+			buttonsDown[0].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[0].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[1].IsShown = true;
+			buttonsDown[1].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.55, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[1].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[2].IsShown = true;
+			buttonsDown[2].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[2].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
 			this->itemCount = 3;
 		break;
 		case menu_MYBOT:
@@ -308,36 +371,72 @@ void Menu::setup(MenuName menuName, int deviceWidth, int deviceHeight)
 			buttons[2].IsShown = true;
 			buttons[2].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
 			buttons[2].img.loadImage(ofToDataPath("", true) + "/app/native/buttonBack.png");
+
+			buttonsDown[0].IsShown = true;
+			buttonsDown[0].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[0].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[1].IsShown = true;
+			buttonsDown[1].rect = ofRectangle(deviceWidth * 0.8, deviceHeight * 0.55, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[1].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[2].IsShown = true;
+			buttonsDown[2].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[2].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
 			this->itemCount = 3;
 		break;
 		case menu_CAREER:
 			buttons[0].IsShown = true;
-			buttons[0].rect = ofRectangle(deviceWidth * 0.1, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttons[0].rect = ofRectangle(deviceWidth * 0.4, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
 			buttons[0].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
 			buttons[1].IsShown = true;
-			buttons[1].rect = ofRectangle(deviceWidth * 0.35, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttons[1].rect = ofRectangle(deviceWidth * 0.65, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
 			buttons[1].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
 			buttons[2].IsShown = true;
-			buttons[2].rect = ofRectangle(deviceWidth * 0.6, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttons[2].rect = ofRectangle(deviceWidth * 0.9, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
 			buttons[2].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
 			buttons[3].IsShown = true;
-			buttons[3].rect = ofRectangle(deviceWidth * 0.85, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttons[3].rect = ofRectangle(deviceWidth * 1.15, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
 			buttons[3].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
 			buttons[4].IsShown = true;
-			buttons[4].rect = ofRectangle(deviceWidth * 1.1, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttons[4].rect = ofRectangle(deviceWidth * 1.4, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
 			buttons[4].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
 			buttons[5].IsShown = true;
-			buttons[5].rect = ofRectangle(deviceWidth * 1.35, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttons[5].rect = ofRectangle(deviceWidth * 1.65, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
 			buttons[5].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
 			buttons[6].IsShown = true;
 			buttons[6].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
 			buttons[6].img.loadImage(ofToDataPath("", true) + "/app/native/buttonBack.png");
+
+			buttonsDown[0].IsShown = true;
+			buttonsDown[0].rect = ofRectangle(deviceWidth * 0.1, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttonsDown[0].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
+			buttonsDown[1].IsShown = true;
+			buttonsDown[1].rect = ofRectangle(deviceWidth * 0.35, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttonsDown[1].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
+			buttonsDown[2].IsShown = true;
+			buttonsDown[2].rect = ofRectangle(deviceWidth * 0.6, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttonsDown[2].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
+			buttonsDown[3].IsShown = true;
+			buttonsDown[3].rect = ofRectangle(deviceWidth * 0.85, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttonsDown[3].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
+			buttonsDown[4].IsShown = true;
+			buttonsDown[4].rect = ofRectangle(deviceWidth * 1.1, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttonsDown[4].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
+			buttonsDown[5].IsShown = true;
+			buttonsDown[5].rect = ofRectangle(deviceWidth * 1.35, deviceHeight * 0.4, deviceWidth * widthMultiplier, deviceHeight * 0.3);
+			buttonsDown[5].img.loadImage(ofToDataPath("", true) + "/app/native/buttonEvent.png");
+			buttonsDown[6].IsShown = true;
+			buttonsDown[6].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[6].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
 			this->itemCount = 7;
 		break;
 		case menu_OPTIONS:
 			buttons[0].IsShown = true;
 			buttons[0].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
 			buttons[0].img.loadImage(ofToDataPath("", true) + "/app/native/buttonBack.png");
+
+			buttonsDown[0].IsShown = true;
+			buttonsDown[0].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[0].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
 			this->itemCount = 1;
 		break;
 		case menu_UPGRADE:
@@ -350,6 +449,16 @@ void Menu::setup(MenuName menuName, int deviceWidth, int deviceHeight)
 			buttons[2].IsShown = true;
 			buttons[2].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
 			buttons[2].img.loadImage(ofToDataPath("", true) + "/app/native/buttonBack.png");
+
+			buttonsDown[0].IsShown = true;
+			buttonsDown[0].rect = ofRectangle(deviceWidth * 0.7, deviceHeight * 0.3, deviceWidth * 0.04, deviceHeight * 0.2);
+			buttonsDown[0].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[1].IsShown = true;
+			buttonsDown[1].rect = ofRectangle(deviceWidth * 0.3, deviceHeight * 0.3, deviceWidth * 0.04, deviceHeight * 0.2);
+			buttonsDown[1].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[2].IsShown = true;
+			buttonsDown[2].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[2].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
 			this->itemCount = 3;
 		break;
 		case menu_STORE:
@@ -360,6 +469,14 @@ void Menu::setup(MenuName menuName, int deviceWidth, int deviceHeight)
 			buttons[1].IsShown = true;
 			buttons[1].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
 			buttons[1].img.loadImage(ofToDataPath("", true) + "/app/native/buttonBack.png");
+
+			buttonsDown[0].IsShown = true;
+			buttonsDown[0].rect = ofRectangle(deviceWidth * 0.3, deviceHeight * 0.1, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[0].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
+			buttonsDown[0].type = 69;
+			buttonsDown[1].IsShown = true;
+			buttonsDown[1].rect = ofRectangle(deviceWidth * 0, deviceHeight * 0.86, deviceWidth * widthMultiplier, deviceHeight * heightMultiplier);
+			buttonsDown[1].img.loadImage(ofToDataPath("", true) + "/app/native/bar.png");
 			this->itemCount = 2;
 		break;
 		case menu_INGAME:
@@ -374,9 +491,25 @@ void Menu::draw(int menuOffset, int horizontalOffset)
 {
 	for(int i = 0; i < this->itemCount - 1; i++)
 	{
-		this->buttons[i].draw(menuOffset, horizontalOffset);
+		if (this->buttons[i].isDown)
+		{
+			this->buttonsDown[i].draw(menuOffset, horizontalOffset);
+		}
+		else
+		{
+			this->buttons[i].draw(menuOffset, horizontalOffset);
+		}
 	}
-	this->buttons[this->itemCount - 1].draw(0, 0); //Draw the back button with no offset
+
+	//Draw the back button (which we must always put with the highest index) with no offset
+	if (this->buttons[this->itemCount - 1].isDown)
+	{
+		this->buttonsDown[this->itemCount - 1].draw(0, 0);
+	}
+	else
+	{
+		this->buttons[this->itemCount - 1].draw(0, 0);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

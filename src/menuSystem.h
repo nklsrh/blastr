@@ -34,6 +34,7 @@ struct Button
 	ofImage img;
 	ofRectangle rect;
 	bool IsShown;
+	bool isDown;
 	int type;
 
 	void draw(int menuOffset, int horizontalOffset);
@@ -42,13 +43,15 @@ struct Button
 struct Menu
 {
 	int menuTransition, menuOffset;
-	int horizontalOffset; //For scrolling career event selection
+	int horizontalOffset, snapGoal, currentSnap; //For scrolling career event selection
 	float heightMultiplier, widthMultiplier;
 	int itemCount;
 	MenuName name;
 
 	Button buttons[10];
+	Button buttonsDown[10];
 	Menu* nextMenu;
+
 
 	void setup(MenuName menuName, int deviceWidth, int deviceHeight);
 	void draw(int menuOffset, int horizontalOffset);
