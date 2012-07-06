@@ -15,20 +15,22 @@ void Tile::setup(int index, int goalTile, int size, int numberOfRows, int number
 
 	if(index == goalTile)
 	{
-		type = GOAL;
+		changeType(GOAL);
 	}
 	else if (index == numberOfRows - 1 || index == (numberOfRows - 1) * numberOfRows || index == numberOfTiles - 1 || index == 0)
 	{
-		type = SPAWN;
+		changeType(SPAWN);
 	}
 	else
 	{
-		type = NORMAL;
+		changeType(NORMAL);
 		randomizeType();
 	}
 
 	rect.width = size;
 	rect.height = size;
+
+	anim_frame = 0;
 
 	for(int i = 0; i < 10; i++)
 	{
@@ -56,35 +58,64 @@ void Tile::randomizeType()
 			// BONUS TILES! //
 			switch(randomInt){
 				case 0:
-					type = HOLE;
+					changeType(HOLE);
 				break;
 				case 1:
-					type = SAND;
+					changeType(SAND);
 				break;
 				case 2:
-					type = SAND;
+					changeType(SAND);
 				break;
 				case 3:
-					type = GLASS;
+					changeType(GLASS);
 				break;
 				case 4:
-					type = NORMAL;
+					changeType(NORMAL);
 				break;
 			}
 
 			// INCREASE CHANCE OF GETTING A NORMAL TILE (around 1/3)
 			if(randomInt > 4){
-				type = NORMAL;
+				changeType(NORMAL);
 			}
 		}
 		else
 		{
 			//	IF it was PowerTile, change back to NORMAL state before powering up again
-			type = NORMAL;
+			changeType(NORMAL);
 		}
 	}
 }
-
+void Tile::changeType(int typeTo)
+{
+	this->type = typeTo;
+	setAnimLength(typeTo);
+}
+void Tile::setAnimLength(int typeTo)
+{
+	switch(typeTo)
+	{
+		case NORMAL:
+			anim_length = 1;
+			break;
+		case GOAL:
+			anim_length = 7;
+			break;
+		case SAND:
+			anim_length = 6;
+			break;
+		case GLASS:
+			anim_length = 8;
+			break;
+		case SPAWN:
+			anim_length = 12;
+			break;
+		case HOLE:
+			anim_length = 0;
+			break;
+	}
+	anim_frame = 0;
+}
 //--------------------------------------------------------------
 void Tile::update()
 {
@@ -94,13 +125,18 @@ void Tile::update()
 	collisionRect.y = pos.y - rect.height/2;
 	collisionRect.width = rect.width;
 	collisionRect.height = rect.height;
+
+	Timer();
 }
+
 void Tile::Timer()
 {
 	intervalTime++;
 
-	if(type != GOAL && type != SPAWN){
-		if(intervalTime >= intervalLength){
+	if(type != GOAL && type != SPAWN)
+	{
+		if(intervalTime >= intervalLength)
+		{
 			randomizeType();
 			intervalTime = 0;
 		}
@@ -119,8 +155,19 @@ void Tile::Timer()
 //			}
 		}
 	}
+
+	animation();
 }
 
+void Tile::animation()
+{
+	anim_frame++;
+
+	if(anim_frame >= anim_length)
+	{
+		anim_frame = 0;
+	}
+}
 //--------------------------------------------------------------
 void Tile::draw(Camera& cam, ofImage& img)
 {
@@ -153,7 +200,8 @@ void Tile::draw(Camera& cam, ofImage& img)
 
 	// ============= EXTRA CRAP
     //ofSetColor(255, 255, 255);
-    img.draw(rect.x, rect.y, rect.width, rect.height);
+    img.drawSubsection(rect.x, rect.y, 0, rect.width, rect.height, (type * 128), anim_frame * 128, 128, 128);
+    //img.draw(rect.x, rect.y, rect.width, rect.height);
     //ofRect(rect.x * 1.05, rect.y * 1.05, 0.0f, rect.width * 0.9, rect.height * 0.9);
     //ofRect(pos.x  - 0.9*(rect.width/2), pos.y - 0.9*(rect.width/2), 0, rect.width * 0.9, rect.height * 0.9);
 }

@@ -6,20 +6,28 @@
  */
 #include "player.h"
 
-void Player::setup(int deviceIndex, int playerIndex, bool bot, float playerSize, float max_blastPower)
+void Player::setup(int deviceIndex, int playerIndex, bool bot, float playerSize, float max_blastPower, string playerTeam)
 {
 	device = deviceIndex;
 	index = playerIndex;
 	IsBot = bot;
 	IsApprehending = false;
 	chosenTarget = -1;
-	size = playerSize;
+	startingSize = playerSize;
 	maxBlastPower = aggression * 2;
 	lineOfSight = aggression * 1.3 * 20;
 	blastStr = 0;
 	score = 0;
 	IsPreppingBlast = false;
 	HasControl = false;
+
+	team = playerTeam;
+
+	img_base.loadImage(ofToDataPath("", true) + "/app/native/" + team + "/base.png");
+	img_base.setAnchorPercent(0.5, 0.5);
+	img_body.loadImage(ofToDataPath("", true) + "/app/native/" + team + "/body.png");
+	img_body.setAnchorPercent(0.5, 0.5);
+	img_highlight.loadImage(ofToDataPath("", true) + "/app/native/" + team + "/highlight.png");
 }
 void Player::reset()
 {
@@ -28,6 +36,7 @@ void Player::reset()
 	IsScoring = false;
 	rotation = 0;
 	HasControl = true;
+	size = startingSize;
 }
 //--------------------------------------------------------------
 void Player::update(Environment& env)
@@ -110,6 +119,7 @@ void Player::physics()
 	if(!IsOnArena)
 	{
 		zPos--;
+		size *= 0.5;
 	}
 	else
 	{
@@ -340,7 +350,7 @@ void Player::right(float weight)
 }
 
 //--------------------------------------------------------------
-void Player::draw(Camera& cam, ofImage& img, int size)
+void Player::draw(Camera& cam, ofImage& img, ofImage& img_arrow, int size)
 {
 	if(index == 0)
 	{
@@ -348,16 +358,32 @@ void Player::draw(Camera& cam, ofImage& img, int size)
 		ofFill();
 		ofCircle(cam.offset.x + pos.x, cam.offset.y + pos.y, blastStr * 50);
 	}
-
 	ofSetColor(255, 255, 255);
+
+	// direction ellipse
+	//ofFill();
+	//ofCircle((inpAcc.x * 100 + cam.offset.x + pos.x), (inpAcc.y * 100 + cam.offset.y + pos.y), size / 8);
+
+	// images
 	ofNoFill();
 
+	// highlight
+	img_highlight.draw(cam.offset.x + pos.x - size/2, cam.offset.y + pos.y - size/2, size, size);
+
+	// base and body (and arrow)
 	ofPushMatrix();
 	ofTranslate((cam.offset.x + pos.x), (cam.offset.y + pos.y));
 	ofRotateZ(rotation);
-	img.draw(0, 0, size, size);
+	//	if(e.tiles[e.goalTile].rect.x > windowWidth || e.tiles[e.goalTile].rect.x < -e.tiles[e.goalTile].rect.width || e.tiles[e.goalTile].rect.y > windowHeight || e.tiles[e.goalTile].rect.y < -e.tiles[e.goalTile].rect.height)
+	//	{
+	//		// direction ellipse
+	//		ofFill();
+	//		ofCircle();
+	//	}
+	ofTranslate(inpAcc.x * 10 - size/2 * 0.2, inpAcc.y * 10 - size/2 * 0.2);
+	img_arrow.draw(0, sqrt(inpAcc.x*inpAcc.x + inpAcc.y*inpAcc.y) * 30, size * 0.2, size * 0.2);
+	ofTranslate(-inpAcc.x * 10 + size/2 * 0.2, -inpAcc.y * 10 + size/2 * 0.2);
+	img_base.draw(0, 0, size, size);
+	img_body.draw(0, 0, size, size);
 	ofPopMatrix();
-
-	ofFill();
-	ofCircle((inpAcc.x * 100 + cam.offset.x + pos.x), (inpAcc.y * 100 + cam.offset.y + pos.y), size / 8);
 }

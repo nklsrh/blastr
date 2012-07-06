@@ -10,7 +10,7 @@ void Glados::setup(int deviceIndex, int numberOfRows, int tileSize)
 {
 	this->device = deviceIndex;
 
-	playerSize = tileSize * 0.3;
+	playerSize = tileSize * 0.5;
 	numberOfPlayers = 4;
 
 	for(int i = 0; i < numberOfPlayers; i++)
@@ -26,7 +26,7 @@ void Glados::setup(int deviceIndex, int numberOfRows, int tileSize)
 			players[i].aggression = 1;
 		}
 
-		players[i].setup(device, i, bot, playerSize, 1);
+		players[i].setup(device, i, bot, playerSize, 1, "aquila");
 
 		players[i].startingPos.x = (i % (numberOfPlayers/2)) * (numberOfRows - 1) * tileSize + tileSize/2;
 		players[i].startingPos.y = floor(i % numberOfPlayers/2) * (numberOfRows - 1) * tileSize + tileSize/2;
@@ -34,8 +34,7 @@ void Glados::setup(int deviceIndex, int numberOfRows, int tileSize)
 		players[i].reset();
 	}
 
-	img_player.loadImage(ofToDataPath("", true) + "/app/native/hydrogen.png");
-	img_player.setAnchorPercent(0.5, 0.5);
+	img_arrows.loadImage(ofToDataPath("", true) + "/app/native/arrows.png");
 }
 
 //--------------------------------------------------------------
@@ -67,6 +66,6 @@ void Glados::draw(Camera& cam)
 	ofFill();
 	for(int i = 0; i < numberOfPlayers; i++)
 	{
-		players[i].draw(cam, img_player, playerSize);
+		players[i].draw(cam, img_player, img_arrows, playerSize);
 	}
 }

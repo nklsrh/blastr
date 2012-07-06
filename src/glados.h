@@ -22,7 +22,7 @@ class Glados {
 
 		Player players[4];
 
-		ofImage img_player;
+		ofImage img_player, img_arrows;
 
 		void setup(int deviceIndex, int numberOfRows, int tileSize);
 		void update(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy);

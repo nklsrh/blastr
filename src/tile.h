@@ -19,8 +19,16 @@ class Tile {
 		void randomizeType();
 		void Timer();
 
+		void changeType(int typeTo);
+		void setAnimLength(int typeTo);
+
+		void animation();
+
 		ofRectangle rect, collisionRect;
 		ofVec2f pos;		//position
+
+		// animation spritesheet ints
+		int anim_frame, anim_length;
 
 		int type, index, intervalTime, intervalLength;
 		int numberOfTiles, numberOfRows;

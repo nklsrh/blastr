@@ -17,9 +17,9 @@
 
 class Player {
 	public:
-		void setup(int deviceIndex, int playerIndex, bool bot, float playerSize, float max_blastPower);
+		void setup(int deviceIndex, int playerIndex, bool bot, float playerSize, float max_blastPower, string playerTeam);
 		void update(Environment& env);
-		void draw(Camera& cam, ofImage& img, int size);
+		void draw(Camera& cam, ofImage& img, ofImage& img_arrow, int size);
 
 		void reset();
 
@@ -42,9 +42,15 @@ class Player {
 		void left(float weight);
 		void right(float weight);
 
-		int index, chosenTarget, size, currentTile, currentTileType;
+		int index, chosenTarget, startingSize, currentTile, currentTileType;
 		bool IsBot, IsApprehending, IsPreppingBlast, IsOnArena, IsScoring, HasControl;
-		float score, blastStr, zPos, rotation;
+		float score, blastStr, zPos, rotation, size;
+
+		//TEAMS
+		string team;
+
+		//PLAYER LAYERS
+		ofImage img_base, img_body, img_highlight;
 
 		int device;
 		// ATTRIBUTES

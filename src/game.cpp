@@ -49,8 +49,8 @@ void Game::endGame(MenuSystem& menu)
 	if(rules.IsGameOver)
 	{
 		//restart();
-		menu.nextMenu = menu.menu_startGame;
-		menu.activeMenu.menuOffset = 1;
+		menu.nextMenu = menu.menu_postmatch;
+		menu.activeMenu.horizontalOffset = 1;
 		menu.activeMenu.menuTransition = -1;
 		menu.IsInGame = false;
 	}

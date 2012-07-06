@@ -50,7 +50,6 @@
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <asset path="assets/chars/hydrogen.png">hydrogen.png</asset>
     <asset path="assets/env/backdrop.png">backdrop.png</asset>
     <asset path="assets/env/tile_glass_128.png">tile_glass_128.png</asset>
     <asset path="assets/env/tile_goal_128.png">tile_goal_128.png</asset>
@@ -84,6 +83,21 @@
     <asset path="assets/menus/buttons/buttonEvent.png">buttonEvent.png</asset>
     <asset path="assets/menus/buttons/buttonItem.png">buttonItem.png</asset>
     <asset path="assets/menus/buttons/buttonStore.png">buttonStore.png</asset>
+    <asset path="assets/chars/axon/base.png">axon/base.png</asset>
+    <asset path="assets/chars/axon/body.png">axon/body.png</asset>
+    <asset path="assets/chars/axon/highlight.png">axon/highlight.png</asset>
+    <asset path="assets/chars/aquila/base.png">aquila/base.png</asset>
+    <asset path="assets/chars/aquila/body.png">aquila/body.png</asset>
+    <asset path="assets/chars/aquila/highlight.png">aquila/highlight.png</asset>
+    <asset path="assets/chars/arc/base.png">arc/base.png</asset>
+    <asset path="assets/chars/arc/body.png">arc/body.png</asset>
+    <asset path="assets/chars/arc/highlight.png">arc/highlight.png</asset>
+    <asset path="assets/chars/hydrogen/base.png">hydrogen/base.png</asset>
+    <asset path="assets/chars/hydrogen/body.png">hydrogen/body.png</asset>
+    <asset path="assets/chars/hydrogen/highlight.png">hydrogen/highlight.png</asset>
+    <asset path="assets/env/tiles_sheet.png">tiles_sheet.png</asset>
+    <asset path="assets/menus/buttons/buttonNext.png">buttonNext.png</asset>
+    <asset path="assets/chars/arrows.png">arrows.png</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.2136424254" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Device-Debug/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>

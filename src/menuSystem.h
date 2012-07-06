@@ -26,6 +26,10 @@ enum MenuName
 	menu_OPTIONS,
 	menu_UPGRADE,
 	menu_STORE,
+	menu_QUICKTEAMSELECT,
+	menu_QUICKBOTSETUP,
+	menu_QUICKCALIBRATION,
+	menu_POSTMATCH,
 	menu_INGAME
 };
 
@@ -33,6 +37,7 @@ struct Button
 {
 	ofImage img;
 	ofRectangle rect;
+	ofRectangle rectOriginal;
 	bool IsShown;
 	bool isDown;
 	int type;
@@ -43,7 +48,8 @@ struct Button
 struct Menu
 {
 	int menuTransition, menuOffset;
-	int horizontalOffset, snapGoal, currentSnap; //For scrolling career event selection
+	int horizontalOffset, snapGoal, currentSnap; //For horizontal scrolling selection
+	int valueOffset[3]; //for stuff like difficulty, bot stats etc
 	float heightMultiplier, widthMultiplier;
 	int itemCount;
 	MenuName name;
@@ -91,7 +97,8 @@ class MenuSystem
 		//list of menus in game
 		Menu menu_main, menu_startGame, menu_inGame;
 		Menu menu_myBot, menu_career, menu_options;
-		Menu menu_upgrade, menu_store;
+		Menu menu_upgrade, menu_store, menu_postmatch;
+		Menu menu_quickTeamselect, menu_quickBotsetup, menu_quickCalibration;
 };
 
 #endif /* MENUMAIN_H_ */

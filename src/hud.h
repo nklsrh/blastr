@@ -20,6 +20,7 @@ class HUD {
 		void update();
 		void draw(Rules& r, Environment& e, Glados& g);
 
+		int windowWidth, windowHeight;
 		ofTrueTypeFont verdana14;
 };
 

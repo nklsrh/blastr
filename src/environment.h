@@ -16,8 +16,8 @@
 #define GOAL 1
 #define SAND 2
 #define GLASS 3
-#define HOLE 4
-#define SPAWN 5
+#define SPAWN 4
+#define HOLE 5
 
 class Environment {
 	public:
@@ -25,7 +25,7 @@ class Environment {
 		float zoomLevel;
 
 		Tile tiles[50];
-		ofImage img_background_env, img_tile_white, img_tile_goal, img_tile_sand, img_tile_glass, img_tile_spawn;
+		ofImage img_background_env, img_tilesheet;
 
 		int goalTile;
 

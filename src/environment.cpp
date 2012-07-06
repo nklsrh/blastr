@@ -9,12 +9,14 @@
 void Environment::setup()
 {
 	goalTile = (numberOfTiles - 1) /2;
+//
+//	img_tile_white.loadImage(ofToDataPath("", true) + "/app/native/tile_white_128.png");
+//	img_tile_goal.loadImage(ofToDataPath("", true) + "/app/native/tile_goal_128.png");
+//	img_tile_sand.loadImage(ofToDataPath("", true) + "/app/native/tile_sand_128.png");
+//	img_tile_glass.loadImage(ofToDataPath("", true) + "/app/native/tile_glass_128.png");
+//	img_tile_spawn.loadImage(ofToDataPath("", true) + "/app/native/tile_spawn_128.png");
 
-	img_tile_white.loadImage(ofToDataPath("", true) + "/app/native/tile_white_128.png");
-	img_tile_goal.loadImage(ofToDataPath("", true) + "/app/native/tile_goal_128.png");
-	img_tile_sand.loadImage(ofToDataPath("", true) + "/app/native/tile_sand_128.png");
-	img_tile_glass.loadImage(ofToDataPath("", true) + "/app/native/tile_glass_128.png");
-	img_tile_spawn.loadImage(ofToDataPath("", true) + "/app/native/tile_spawn_128.png");
+	img_tilesheet.loadImage(ofToDataPath("", true) + "/app/native/tiles_sheet.png");
 
 	img_background_env.loadImage(ofToDataPath("", true) + "/app/native/backdrop.png");
 
@@ -61,8 +63,8 @@ void Environment::hillMovementTimer()
 
 void Environment::moveHill()
 {
-	tiles[goalTile].type = NORMAL;
-	tiles[nextHillTile].type = GOAL;
+	tiles[goalTile].changeType(NORMAL);
+	tiles[nextHillTile].changeType(GOAL);
 	goalTile = nextHillTile;
 }
 //--------------------------------------------------------------
@@ -75,19 +77,19 @@ void Environment::draw(Camera& cam)
 		switch(tiles[i].type)
 		{
 			case NORMAL:
-				tiles[i].draw(cam, img_tile_white);
+				tiles[i].draw(cam, img_tilesheet);
 			break;
 			case GOAL:
-				tiles[i].draw(cam, img_tile_goal);
+				tiles[i].draw(cam, img_tilesheet);
 			break;
 			case SAND:
-				tiles[i].draw(cam, img_tile_sand);
+				tiles[i].draw(cam, img_tilesheet);
 			break;
 			case GLASS:
-				tiles[i].draw(cam, img_tile_glass);
+				tiles[i].draw(cam, img_tilesheet);
 			break;
 			case SPAWN:
-				tiles[i].draw(cam, img_tile_spawn);
+				tiles[i].draw(cam, img_tilesheet);
 			break;
 		}
 	}
