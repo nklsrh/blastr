@@ -21,6 +21,9 @@ void Control::setup()
 	// choices: PLAYBOOK, DEV_ALPHA
 	device = PLAYBOOK;
 
+	song.loadSound(ofToDataPath("", true) + "/app/native/liam_song.mp3");
+	song.play();
+
 	menuSystem.setup(device);
 }
 
@@ -29,12 +32,12 @@ void Control::update()
 	menuSystem.update();
 	if(menuSystem.IsStartGame)
 	{
-		game.setup(menuSystem.device);
+		game.setup(menuSystem.device, menuSystem.difficulty);
 		menuSystem.IsStartGame = false;
 	}
 	if(menuSystem.IsInGame)
 	{
-		game.update(menuSystem, x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity));
+		game.update(menuSystem, x1, y1, IsTouch, ofxAccelerometer.getForce().x * (sensitivity), ofxAccelerometer.getForce().y * (sensitivity) + 0.05);
 	}
 }
 

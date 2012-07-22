@@ -6,7 +6,7 @@
  */
 #include "glados.h"
 
-void Glados::setup(int deviceIndex, int numberOfRows, int tileSize)
+void Glados::setup(int deviceIndex, int numberOfRows, int tileSize, float difficulty)
 {
 	this->device = deviceIndex;
 
@@ -19,15 +19,21 @@ void Glados::setup(int deviceIndex, int numberOfRows, int tileSize)
 		if(i != 0)
 		{
 			bot = true;
-			players[i].aggression = ofRandom(0.1, 0.9);
+			players[i].aggression = difficulty + ofRandom(-0.1, 0.1);
 		}
 		else
 		{
 			players[i].aggression = 1;
 		}
+	}
 
-		players[i].setup(device, i, bot, playerSize, 1, "aquila");
+	players[0].setup(device, 0, false, playerSize, 1, "axon");
+	players[1].setup(device, 1, true, playerSize, 1, "aquila");
+	players[2].setup(device, 2, true, playerSize, 1, "hydrogen");
+	players[3].setup(device, 3, true, playerSize, 1, "arc");
 
+	for(int i = 0; i < numberOfPlayers; i++)
+	{
 		players[i].startingPos.x = (i % (numberOfPlayers/2)) * (numberOfRows - 1) * tileSize + tileSize/2;
 		players[i].startingPos.y = floor(i % numberOfPlayers/2) * (numberOfRows - 1) * tileSize + tileSize/2;
 
@@ -38,11 +44,11 @@ void Glados::setup(int deviceIndex, int numberOfRows, int tileSize)
 }
 
 //--------------------------------------------------------------
-void Glados::update(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy)
+void Glados::update(Environment& env, BlastCollection& b, Notify& n, float x1, float y1, bool IsTouch, float accx, float accy)
 {
 	for(int i = 0; i < numberOfPlayers; i++)
 	{
-		players[i].update(env);
+		players[i].update(env, n);
 
 		if(players[i].IsOnArena)
 		{
@@ -60,12 +66,12 @@ void Glados::update(Environment& env, BlastCollection& b, float x1, float y1, bo
 }
 
 //--------------------------------------------------------------
-void Glados::draw(Camera& cam)
+void Glados::draw(Camera& cam, Environment& env)
 {
 	ofSetColor(255,255,255);
 	ofFill();
 	for(int i = 0; i < numberOfPlayers; i++)
 	{
-		players[i].draw(cam, img_player, img_arrows, playerSize);
+		players[i].draw(cam, env, img_player, img_arrows);
 	}
 }

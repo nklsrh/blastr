@@ -10,20 +10,27 @@
 
 #include "glados.h"
 #include "environment.h"
+#include "notify.h"
 
 #include "ofMain.h"
 
-class Rules {
+struct Rules {
 	public:
 		float gameTime, scoreMultiplier, deathPenalty, marginOfError;
 		bool IsGameRunning, IsGameOver;
 
 		void scorePlayers(Glados& g);
-		void checkTimer();
+		void checkTimer(Glados& g);
+		void checkWinner(Glados& g, Notify& n);
 
-		void setup(double gameLength);
-		void update(Glados& g, Environment& e);
+		void setup(double gameLength, Glados& g, Notify& n);
+		void update(Glados& g, Environment& e, Notify& n);
 		void draw();
+
+		string teams[4];
+		int positionsIndex[4], teamScores[4];
+
+		int playerPositionBefore, state;
 };
 
 

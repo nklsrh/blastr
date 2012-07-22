@@ -14,8 +14,8 @@ void Player::setup(int deviceIndex, int playerIndex, bool bot, float playerSize,
 	IsApprehending = false;
 	chosenTarget = -1;
 	startingSize = playerSize;
-	maxBlastPower = aggression * 2;
-	lineOfSight = aggression * 1.3 * 20;
+	maxBlastPower = 3;
+	lineOfSight = playerSize * 2;
 	blastStr = 0;
 	score = 0;
 	IsPreppingBlast = false;
@@ -39,18 +39,18 @@ void Player::reset()
 	size = startingSize;
 }
 //--------------------------------------------------------------
-void Player::update(Environment& env)
+void Player::update(Environment& env, Notify& n)
 {
 	if(IsOnArena)
 	{
-		if(index != 0 && HasControl)
-		{
-			tracking(env);
-		}
+//		if(index != 0 && HasControl)
+//		{
+//			//tracking(env);
+//		}
 		tiles(env);
 	}
 	physics();
-	checkOnArena(env);
+	checkOnArena(env, n);
 }
 //--------------------------------------------------------------
 void Player::tiles(Environment& env)
@@ -119,15 +119,16 @@ void Player::physics()
 	if(!IsOnArena)
 	{
 		zPos--;
-		size *= 0.5;
+		size *= 0.9;
 	}
 	else
 	{
 		zPos = 0;
+		size = startingSize;
 	}
 }
 //--------------------------------------------------------------
-void Player::checkOnArena(Environment& env)
+void Player::checkOnArena(Environment& env, Notify& n)
 {
 	double marginOfError;
 	if(index != 0)
@@ -136,23 +137,23 @@ void Player::checkOnArena(Environment& env)
 	}
 	else
 	{
-		marginOfError = 0.1;
+		marginOfError = 0.2;
 	}
     //LEFT
     if(pos.x < env.tiles[0].pos.x - env.tileSize/2 - env.tileSize * marginOfError){
-      IsOnArena = false;
+      fall(n);
     }
     //RIGHT
     if(pos.x > env.tiles[env.numberOfTiles - 1].pos.x + env.tileSize/2 + env.tileSize * marginOfError){
-      IsOnArena = false;
+    	fall(n);
     }
     //TOP
     if(pos.y < env.tiles[env.numberOfTiles - 1].pos.y - env.tileSize/2 - env.tileSize * marginOfError){
-      IsOnArena = false;
+    	fall(n);
     }
     //BOTTOM
     if(pos.y > env.tiles[0].pos.y + env.tileSize/2 + env.tileSize/2 * marginOfError){
-      IsOnArena = false;
+    	fall(n);
     }
 
     if(!IsOnArena)
@@ -165,6 +166,14 @@ void Player::checkOnArena(Environment& env)
 	  reset();
 	}
 }
+void Player::fall(Notify& n)
+{
+	IsOnArena = false;
+	if(index == 0)
+	{
+		n.begin(60, "FALL");
+	}
+}
 //--------------------------------------------------------------
 void Player::blastCollisions(BlastCollection& b)
 {
@@ -172,20 +181,24 @@ void Player::blastCollisions(BlastCollection& b)
 	{
 		if(b.blasts[i].pos.distance(pos) < b.blasts[i].radius)
 		{
-			if(index == 0 && i == 0 && !IsOnArena)
+			if((index != i) && IsOnArena)	// dont get pwnd by ur own blast lmao
 			{
-				//vel += b.blasts[i].vel * b.blasts[i].str * 2;
+				vel -= b.blasts[i].vel * b.blasts[i].str * 2;
 			}
-			else
-			{
-				vel += b.blasts[i].vel * b.blasts[i].str * 0.5;
-			}
+		}
+		// if blast meets blast, then cancel out depending on strength
+		if(b.blasts[i].pos.distance(b.blasts[index].pos) < b.blasts[index].radius * 2)
+		{
+			float temp = b.blasts[i].str;
+			b.blasts[i].str -= b.blasts[index].str;
+			b.blasts[i].str -= temp;
 		}
 	}
 }
 //-------------------------------------------------------------
 void Player::handleInput(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy)
 {
+	inpTouchRaw = ofVec2f(x1, y1);
 	// prepping and blasting
 	if(IsTouch)
 	{
@@ -245,7 +258,7 @@ void Player::apprehension(int numberOfPlayers, Player players[], BlastCollection
 		{
 			if(i != index)
 			{
-				if(pos.distance(players[i].pos) < lineOfSight * size  && players[i].IsOnArena)
+				if(pos.distance(players[i].pos) < lineOfSight && players[i].IsOnArena)
 				{
 					chosenTarget = i;
 				}
@@ -281,7 +294,7 @@ void Player::prepBlast(ofVec2f input)
 {
 	if(blastStr < maxBlastPower && IsOnArena)
 	{
-		blastStr += aggression * 0.03;
+		blastStr += aggression * 0.2;
 	}
 
 	inpTouch = input;
@@ -295,10 +308,12 @@ void Player::performBlast(BlastCollection& b, ofVec2f inpTouch)
 	{
 		b.blasts[index].setup(index, size);
 		b.blasts[index].IsEnabled = true;
-		b.blasts[index].str = blastStr;
-		b.blasts[index].spd = 25;
-		b.blasts[index].vel = vel + inpTouch * blastStr * b.blasts[index].spd;
-		b.blasts[index].pos = pos + b.blasts[index].vel * b.blasts[index].radius * 6;
+		b.blasts[index].str = blastStr * 0.5;
+		b.blasts[index].spd = aggression * 8;
+		b.blasts[index].vel = vel + inpTouch.normalized() * blastStr * b.blasts[index].spd;
+		b.blasts[index].pos = pos + b.blasts[index].vel;
+
+		vel -= b.blasts[index].vel * 0.15;
 
 		acc.x = ofClamp(-b.blasts[index].vel.x * 0.5, -10, 0);
 		acc.y = ofClamp(-b.blasts[index].vel.y * 0.5, -10, 0);
@@ -350,20 +365,48 @@ void Player::right(float weight)
 }
 
 //--------------------------------------------------------------
-void Player::draw(Camera& cam, ofImage& img, ofImage& img_arrow, int size)
+void Player::draw(Camera& cam, Environment& env, ofImage& img, ofImage& img_arrow)
 {
-	if(index == 0)
+	if(index == 0 && IsOnArena)
 	{
-		ofSetColor(200, 50, 0);
+		// the blast perpping circle
+		ofSetColor(0, 170, 250, 80);
 		ofFill();
-		ofCircle(cam.offset.x + pos.x, cam.offset.y + pos.y, blastStr * 50);
+		ofCircle(cam.offset.x + pos.x, cam.offset.y + pos.y, blastStr * 30);
+
+		if(IsPreppingBlast){
+			//on tap, draw this amazing line to the amazing circle
+			ofSetLineWidth(20);
+			//ofEnableSmoothing();
+			ofSetColor(0, 100, 100, 80);
+			ofLine(cam.offset.x + pos.x, cam.offset.y + pos.y, inpTouchRaw.x, inpTouchRaw.y);
+			//ofDisableSmoothing();
+			//on tap, draw this amazing circle of amazing
+			ofSetColor(0, 170, 250, 80);
+			ofNoFill();
+			// outer circle
+			ofSetLineWidth(30);
+			ofCircle(inpTouchRaw.x, inpTouchRaw.y, blastStr * 30);
+			// inner circle
+			ofSetLineWidth(10);
+			ofSetColor(0, 100, 100, 80);
+			ofCircle(inpTouchRaw.x, inpTouchRaw.y, blastStr * 10);
+			ofSetLineWidth(0);
+		}
+
+		// direction ellipse
+		ofFill();
+		ofSetColor(10, 10, 10, 50);
+		ofCircle((inpAcc.x * 100 + cam.offset.x + pos.x), (inpAcc.y * 100 + cam.offset.y + pos.y), size / 8);
+
+		// goal indicator
+		if(pos.distance(env.tiles[env.goalTile].pos) > env.tileSize / 2)
+		{
+			ofSetColor(0, 240, 0);
+			ofCircle((env.tiles[env.goalTile].pos - pos).normalized().x * size/2 + cam.offset.x + pos.x, (env.tiles[env.goalTile].pos - pos).normalized().y * size/2.4 + cam.offset.y + pos.y, size/9);
+		}
 	}
 	ofSetColor(255, 255, 255);
-
-	// direction ellipse
-	//ofFill();
-	//ofCircle((inpAcc.x * 100 + cam.offset.x + pos.x), (inpAcc.y * 100 + cam.offset.y + pos.y), size / 8);
-
 	// images
 	ofNoFill();
 
@@ -374,15 +417,11 @@ void Player::draw(Camera& cam, ofImage& img, ofImage& img_arrow, int size)
 	ofPushMatrix();
 	ofTranslate((cam.offset.x + pos.x), (cam.offset.y + pos.y));
 	ofRotateZ(rotation);
-	//	if(e.tiles[e.goalTile].rect.x > windowWidth || e.tiles[e.goalTile].rect.x < -e.tiles[e.goalTile].rect.width || e.tiles[e.goalTile].rect.y > windowHeight || e.tiles[e.goalTile].rect.y < -e.tiles[e.goalTile].rect.height)
-	//	{
-	//		// direction ellipse
-	//		ofFill();
-	//		ofCircle();
-	//	}
-	ofTranslate(inpAcc.x * 10 - size/2 * 0.2, inpAcc.y * 10 - size/2 * 0.2);
-	img_arrow.draw(0, sqrt(inpAcc.x*inpAcc.x + inpAcc.y*inpAcc.y) * 30, size * 0.2, size * 0.2);
-	ofTranslate(-inpAcc.x * 10 + size/2 * 0.2, -inpAcc.y * 10 + size/2 * 0.2);
+	// DRAWING THE STUPID DIRECTIONAL ARROW
+	//ofTranslate(inpAcc.x * 10 - size/2 * 0.2, inpAcc.y * 10 - size/2 * 0.2);
+	//img_arrow.draw(0, sqrt(inpAcc.x*inpAcc.x + inpAcc.y*inpAcc.y) * 30, size * 0.2, size * 0.2);
+	//ofTranslate(-inpAcc.x * 10 + size/2 * 0.2, -inpAcc.y * 10 + size/2 * 0.2);
+	// DRAWING THE BASE AND BODY
 	img_base.draw(0, 0, size, size);
 	img_body.draw(0, 0, size, size);
 	ofPopMatrix();

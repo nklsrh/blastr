@@ -38,13 +38,24 @@ void Blast::physics()
 	}
 
 	//	radius = 10;
-	radius = startingSize * str * 0.3;//(0.6 - str);
+	radius = startingSize * str * 0.2;//(0.6 - str);
 }
 
 //--------------------------------------------------------------
 void Blast::draw(Camera& cam)
 {
-	ofSetColor(0, 255, 0);
-	ofFill();
+	// set outer colour
+	ofSetColor(0, 170, 250, 70);
+	// only stroke
+	ofNoFill();
+	// outer circle
+	ofSetLineWidth(radius * 0.4);
 	ofCircle(cam.offset.x + pos.x, cam.offset.y + pos.y, radius);
+	// inner circle
+	ofFill();
+	ofSetLineWidth(radius * 0.2);
+	ofSetColor(0, 200, 200);
+	ofCircle(cam.offset.x + pos.x, cam.offset.y + pos.y, radius * 0.7);
+	//ofSetColor(0, 255, 0);
+	//ofCircle(cam.offset.x + pos.x, cam.offset.y + pos.y, radius);
 }

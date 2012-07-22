@@ -11,7 +11,7 @@
 #include "camera.h"
 #include "ofMain.h"
 
-class Tile {
+struct Tile {
 	public:
 		void setup(int index, int goalTile, int size, int numberOfRows, int numberOfTiles);
 		void update();

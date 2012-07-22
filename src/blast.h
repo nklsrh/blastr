@@ -12,7 +12,7 @@
 
 #include "ofMain.h"
 
-class Blast {
+struct Blast {
 	public:
 		void setup(int playerIndex, int startingSize);
 		void update();

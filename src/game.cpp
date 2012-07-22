@@ -6,9 +6,10 @@
  */
 #include "game.h"
 
-void Game::setup(int gameplayDevice)
+void Game::setup(int gameplayDevice, float difficulty)
 {
 	device = gameplayDevice;
+	this->difficulty = difficulty;
 
 	if(device == DEV_ALPHA)
 	{
@@ -35,12 +36,13 @@ void Game::setup(int gameplayDevice)
 //--------------------------------------------------------------------
 void Game::restart()
 {
+	notify.setup();
 	env.setup();
-	glados.setup(device, env.numberOfRows, env.tileSize);
+	glados.setup(device, env.numberOfRows, env.tileSize, difficulty);
 	blastCol.setup(glados.numberOfPlayers, glados.playerSize);
 	cam.setup(env.zoomLevel);
 
-	rules.setup(gameLength);
+	rules.setup(gameLength, glados, notify);
 	hud.setup(env.windowWidth, env.windowHeight);
 }
 //----------------------------------------------------------------
@@ -52,17 +54,25 @@ void Game::endGame(MenuSystem& menu)
 		menu.nextMenu = menu.menu_postmatch;
 		menu.activeMenu.horizontalOffset = 1;
 		menu.activeMenu.menuTransition = -1;
+		for(int i = 0; i < 4; i++)
+		{
+			menu.teams[i] = rules.teams[i];
+			menu.scores[i] = rules.teamScores[i];
+			menu.teamIndex[i] = rules.positionsIndex[i];
+		}
 		menu.IsInGame = false;
+		menu.IsStartGame = false;
 	}
 }
 //--------------------------------------------------------------
 void Game::update(MenuSystem& menu, float x1, float y1, bool IsTouch, float accx, float accy)
 {
-	rules.update(glados, env);
+	rules.update(glados, env, notify);
 	env.update();
-	glados.update(env, blastCol, x1, y1, IsTouch, accx, accy);
+	glados.update(env, blastCol, notify, x1, y1, IsTouch, accx, accy);
 	blastCol.update();
 	hud.update();
+	notify.update();
 
 	cam.update(glados.players[0].pos, env.windowWidth, env.windowHeight);
 
@@ -73,6 +83,7 @@ void Game::draw()
 {
 	env.draw(cam);
 	blastCol.draw(cam);
-	glados.draw(cam);
+	glados.draw(cam, env);
 	hud.draw(rules, env, glados);
+	notify.draw(hud.mediumFont, env.windowWidth, env.windowHeight);
 }

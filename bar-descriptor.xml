@@ -13,7 +13,7 @@
 
     <!-- The name that is displayed in the BlackBerry Tablet OS application installer. 
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>BLASTR</name>
+    <name>BLASTR:ARENA</name>
     
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -98,6 +98,39 @@
     <asset path="assets/env/tiles_sheet.png">tiles_sheet.png</asset>
     <asset path="assets/menus/buttons/buttonNext.png">buttonNext.png</asset>
     <asset path="assets/chars/arrows.png">arrows.png</asset>
+    <asset path="assets/menus/buttons/buttonMenu.png">buttonMenu.png</asset>
+    <asset path="assets/menus/buttons/buttonResume.png">buttonResume.png</asset>
+    <asset path="assets/menus/buttons/buttonQuickMatch_down.png">buttonQuickMatch_down.png</asset>
+    <asset path="assets/menus/buttons/buttonBack_down.png">buttonBack_down.png</asset>
+    <asset path="assets/menus/buttons/buttonNext_down.png">buttonNext_down.png</asset>
+    <asset path="assets/menus/buttons/chooseAquila.png">chooseAquila.png</asset>
+    <asset path="assets/menus/buttons/chooseArc.png">chooseArc.png</asset>
+    <asset path="assets/menus/buttons/chooseAxon.png">chooseAxon.png</asset>
+    <asset path="assets/menus/buttons/chooseHydrogen.png">chooseHydrogen.png</asset>
+    <asset path="assets/menus/bg/bgTeams.png">bgTeams.png</asset>
+    <asset path="assets/menus/buttons/buttonSlider.png">buttonSlider.png</asset>
+    <asset path="assets/menus/buttons/difficultyBox.png">difficultyBox.png</asset>
+    <asset path="assets/menus/bg/bgSetup.png">bgSetup.png</asset>
+    <asset path="assets/menus/bg/bgCalibration.png">bgCalibration.png</asset>
+    <asset path="assets/menus/buttons/chooseHydrogen_dim.png">chooseHydrogen_dim.png</asset>
+    <asset path="assets/menus/bg/bgPostMatch.png">bgPostMatch.png</asset>
+    <asset path="assets/fonts/akashi.ttf">akashi.ttf</asset>
+    <asset path="assets/menus/buttons/buttonPostMatchEnemy.png">buttonPostMatchEnemy.png</asset>
+    <asset path="assets/menus/buttons/buttonPostMatchPlayer.png">buttonPostMatchPlayer.png</asset>
+    <asset path="assets/menus/buttons/PostMatchWinnings.png">PostMatchWinnings.png</asset>
+    <asset path="assets/menus/buttons/buttonPostMatchaquila.png">buttonPostMatchaquila.png</asset>
+    <asset path="assets/menus/buttons/buttonPostMatcharc.png">buttonPostMatcharc.png</asset>
+    <asset path="assets/menus/buttons/buttonPostMatchaxon.png">buttonPostMatchaxon.png</asset>
+    <asset path="assets/menus/buttons/buttonPostMatchhydrogen.png">buttonPostMatchhydrogen.png</asset>
+    <asset path="assets/menus/buttons/chooseAquila_dim.png">chooseAquila_dim.png</asset>
+    <asset path="assets/menus/buttons/chooseArc_dim.png">chooseArc_dim.png</asset>
+    <asset path="assets/menus/hud/HUDaquila.png">HUDaquila.png</asset>
+    <asset path="assets/menus/hud/HUDarc.png">HUDarc.png</asset>
+    <asset path="assets/menus/hud/HUDaxon.png">HUDaxon.png</asset>
+    <asset path="assets/menus/hud/HUDhydrogen.png">HUDhydrogen.png</asset>
+    <asset path="assets/menus/bg/superbg.png">superbg.png</asset>
+    <asset path="assets/audio/liam_music.mp3">liam_music.mp3</asset>
+    <asset path="assets/menus/buttons/buttonOptions_down.png">buttonOptions_down.png</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.2136424254" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="${workspace_loc:/addons/ofxQNX/libs/SDL/libPlayBook/Device-Debug/libSDL.so}" type="Qnx/Elf">lib/libSDL.so</asset>

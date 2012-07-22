@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 
-class Camera {
+struct Camera {
 	public:
 		void setup(float cameraZoom);
 		void update(ofVec2f playerPosition, int windowWidth, int windowHeight);

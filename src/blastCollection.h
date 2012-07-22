@@ -10,7 +10,7 @@
 
 #include "blast.h"
 
-class BlastCollection {
+struct BlastCollection {
 	public:
 		int numberOfBlasts;
 

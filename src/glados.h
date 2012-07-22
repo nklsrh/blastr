@@ -12,10 +12,11 @@
 #include "player.h"
 #include "blastCollection.h"
 #include "camera.h"
+#include "notify.h"
 
 #include "ofMain.h"
 
-class Glados {
+struct Glados {
 	public:
 		int numberOfPlayers, playerSize;
 		int device;
@@ -24,9 +25,9 @@ class Glados {
 
 		ofImage img_player, img_arrows;
 
-		void setup(int deviceIndex, int numberOfRows, int tileSize);
-		void update(Environment& env, BlastCollection& b, float x1, float y1, bool IsTouch, float accx, float accy);
-		void draw(Camera& cam);
+		void setup(int deviceIndex, int numberOfRows, int tileSize, float difficulty);
+		void update(Environment& env, BlastCollection& b, Notify& n, float x1, float y1, bool IsTouch, float accx, float accy);
+		void draw(Camera& cam, Environment& env);
 };
 
 #endif /* GLADOS_H_ */

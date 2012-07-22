@@ -30,6 +30,7 @@ enum MenuName
 	menu_QUICKBOTSETUP,
 	menu_QUICKCALIBRATION,
 	menu_POSTMATCH,
+	menu_PAUSED,
 	menu_INGAME
 };
 
@@ -58,13 +59,14 @@ struct Menu
 	Button buttonsDown[10];
 	Menu* nextMenu;
 
+	ofImage bg;
 
 	void setup(MenuName menuName, int deviceWidth, int deviceHeight);
-	void draw(int menuOffset, int horizontalOffset);
+	void draw(int menuOffset, int horizontalOffset, int windowWidth, int windowHeight);
 	void touchUp(float x, float y);
 };
 
-class MenuSystem
+struct MenuSystem
 {
 	public:
 		void setup(int gameplayDevice);
@@ -79,6 +81,10 @@ class MenuSystem
 
 		ofTrueTypeFont font;
 
+		ofImage superbg;
+		ofVec2f superPos;
+		int superTicker;
+
 		int device; // PLAYBOOK, DEV_ALPHA
 
 		int deviceWidth;
@@ -91,14 +97,22 @@ class MenuSystem
 		ofVec2f previousTouch;
 		ofVec2f currentTouch;
 		ofVec2f initialTouch;
+		bool touchReleased;
 
 		Menu activeMenu, nextMenu;
+
+		float difficulty;
 
 		//list of menus in game
 		Menu menu_main, menu_startGame, menu_inGame;
 		Menu menu_myBot, menu_career, menu_options;
 		Menu menu_upgrade, menu_store, menu_postmatch;
+		Menu menu_paused;
 		Menu menu_quickTeamselect, menu_quickBotsetup, menu_quickCalibration;
+
+		// SCORING
+		string teams[4];
+		int scores[4], teamIndex[4];
 };
 
 #endif /* MENUMAIN_H_ */

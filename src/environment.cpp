@@ -45,15 +45,15 @@ void Environment::hillMovementTimer()
 {
 	if(hillIntervalTime >= hillIntervalLength)
 	{
-		moveHill();
 		hillIntervalTime = 0;
-
-		nextHillTile = floor(ofRandom(2, numberOfTiles - 2));
+		ofSeedRandom();
+		nextHillTile = floor(ofRandom(numberOfRows + 1, numberOfTiles - numberOfRows - 1));
 		do
 		{
-			nextHillTile = floor(ofRandom(2, numberOfTiles - 2));
+			nextHillTile = floor(ofRandom(numberOfRows + 1, numberOfTiles - numberOfRows - 1));
 		}
-		while(tiles[nextHillTile].type != NORMAL && tiles[nextHillTile].type != SPAWN);
+		while(tiles[nextHillTile].type != NORMAL);
+		moveHill();
 	}
 	else
 	{
@@ -64,8 +64,8 @@ void Environment::hillMovementTimer()
 void Environment::moveHill()
 {
 	tiles[goalTile].changeType(NORMAL);
-	tiles[nextHillTile].changeType(GOAL);
 	goalTile = nextHillTile;
+	tiles[goalTile].changeType(GOAL);
 }
 //--------------------------------------------------------------
 void Environment::draw(Camera& cam)
@@ -74,23 +74,9 @@ void Environment::draw(Camera& cam)
 
 	for(int i = 0; i < numberOfTiles; i++)
 	{
-		switch(tiles[i].type)
+		if(tiles[i].type != HOLE)
 		{
-			case NORMAL:
-				tiles[i].draw(cam, img_tilesheet);
-			break;
-			case GOAL:
-				tiles[i].draw(cam, img_tilesheet);
-			break;
-			case SAND:
-				tiles[i].draw(cam, img_tilesheet);
-			break;
-			case GLASS:
-				tiles[i].draw(cam, img_tilesheet);
-			break;
-			case SPAWN:
-				tiles[i].draw(cam, img_tilesheet);
-			break;
+			tiles[i].draw(cam, img_tilesheet);
 		}
 	}
 }

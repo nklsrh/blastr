@@ -15,10 +15,12 @@
 #include "ofxQNX.h"
 #include "ofxAccelerometer.h"
 
-class Control : public ofxQNXApp {
+struct Control : public ofxQNXApp {
 	public:
 		MenuSystem menuSystem;
 		Game game;
+
+		ofSoundPlayer song;
 
 		int device;
 

@@ -14,14 +14,15 @@
 
 #include "ofMain.h"
 
-class HUD {
+struct HUD {
 	public:
 		void setup(int windowWidth, int windowHeight);
 		void update();
 		void draw(Rules& r, Environment& e, Glados& g);
 
+		ofImage arc, axon, aquila, hydrogen;
 		int windowWidth, windowHeight;
-		ofTrueTypeFont verdana14;
+		ofTrueTypeFont smallFont, mediumFont, largeFont;
 };
 
 #endif /* HUD_H_ */

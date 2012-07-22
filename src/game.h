@@ -15,10 +15,11 @@
 #include "rules.h"
 #include "hud.h"
 #include "menuSystem.h"
+#include "notify.h"
 
 #include "ofMain.h"
 
-class Game {
+struct Game {
 	public:
 		Rules rules;
 		Environment env;
@@ -27,14 +28,17 @@ class Game {
 		BlastCollection blastCol;
 		HUD hud;
 		MenuSystem menu;
+		Notify notify;
 
 		int windowHeight, windowWidth;
 		int device;
 		int gameLength;
 
+		float difficulty;
+
 		void restart();
 
-		void setup(int gameplayDevice);
+		void setup(int gameplayDevice, float difficulty);
 		void update(MenuSystem& menu, float x1, float y1, bool IsTouch, float accx, float accy);
 		void movePlayer(float x1, float y1);
 		void playerBlast(float x1, float y1, bool IsTouch);

@@ -12,21 +12,23 @@
 #include "camera.h"
 #include "blast.h"
 #include "blastCollection.h"
+#include "notify.h"
 
 #include "ofMain.h"
 
-class Player {
+struct Player {
 	public:
 		void setup(int deviceIndex, int playerIndex, bool bot, float playerSize, float max_blastPower, string playerTeam);
-		void update(Environment& env);
-		void draw(Camera& cam, ofImage& img, ofImage& img_arrow, int size);
+		void update(Environment& env, Notify& n);
+		void draw(Camera& cam, Environment& env, ofImage& img, ofImage& img_arrow);
 
 		void reset();
 
 		void physics();
-		void checkOnArena(Environment& env);
+		void checkOnArena(Environment& env, Notify& n);
 		void tracking(Environment& env);
 		void tiles(Environment& env);
+		void fall(Notify& n);
 		void apprehension(int numberOfPlayers, Player players[], BlastCollection& b);
 		void attackTarget(ofVec2f targetPos, BlastCollection& b);
 		void prepBlast(ofVec2f input);
@@ -56,7 +58,7 @@ class Player {
 		// ATTRIBUTES
 		float lineOfSight, aggression, maxBlastPower;
 
-		ofVec2f pos, startingPos, vel, acc, inpAcc, inpTouch, target, dirToGoal, blastVel;	//inp = input value, in x and y
+		ofVec2f pos, startingPos, vel, acc, inpAcc, inpTouch, inpTouchRaw, target, dirToGoal, blastVel;	//inp = input value, in x and y
 };
 
 #endif /* PLAYER_H_ */

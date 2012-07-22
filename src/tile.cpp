@@ -174,13 +174,28 @@ void Tile::draw(Camera& cam, ofImage& img)
     rect.x = cam.offset.x + (pos.x - rect.width/2);
     rect.y = cam.offset.y + (pos.y - rect.height/2);
 
-	// ============== BORDERS AND HIGHLIGHTS
+    //due to player confusion, spawn tiles are scrapped for now
+    if(type != SPAWN)
+    {
+    	img.drawSubsection(rect.x, rect.y, 0, rect.width, rect.height, (type * 128), anim_frame * 128, 128, 128);
+    }
+    else
+    {
+    	img.drawSubsection(rect.x, rect.y, 0, rect.width, rect.height, (NORMAL * 128), 0, 128, 128); // NORMAL TILE
+    }
+}
+
+
+//		old way of drawing tiles
+
+
+// ============== BORDERS AND HIGHLIGHTS
 //	ofSetColor(40, 40, 40);	// dark grey
 //  ofRect(rect.x, rect.y + rect.height * 0.98, rect.width, rect.height * 0.02);	// bottom line
 //  ofSetColor(255, 255, 255);	// white
 //  ofRect(rect.x + rect.width * 0.98, rect.y, rect.width * 0.02, rect.height);	// right line
 
-    // ============== TILE TYPES
+// ============== TILE TYPES
 //	if(type == GOAL)
 //	{
 //		ofSetColor(255, 110, 0);	//orange
@@ -189,19 +204,18 @@ void Tile::draw(Camera& cam, ofImage& img)
 //	{
 //		ofSetColor(255, 255, 255);	//white
 //	}
-	//ofRect(rect.x, rect.y, 0.0f, rect.width, rect.height);	// actual base tile
+//ofRect(rect.x, rect.y, 0.0f, rect.width, rect.height);	// actual base tile
 
-    //	============= PLAYER TILE CURRENT (override)
+//	============= PLAYER TILE CURRENT (override)
 //	if(HasPlayer[0])
 //	{
 //		ofSetColor(170, 0, 200);	// purple
 //		//ofRect(rect.x, rect.y, 0.0f, rect.width, rect.height);	// purple overlay tile
 //	}
 
-	// ============= EXTRA CRAP
-    //ofSetColor(255, 255, 255);
-    img.drawSubsection(rect.x, rect.y, 0, rect.width, rect.height, (type * 128), anim_frame * 128, 128, 128);
-    //img.draw(rect.x, rect.y, rect.width, rect.height);
-    //ofRect(rect.x * 1.05, rect.y * 1.05, 0.0f, rect.width * 0.9, rect.height * 0.9);
-    //ofRect(pos.x  - 0.9*(rect.width/2), pos.y - 0.9*(rect.width/2), 0, rect.width * 0.9, rect.height * 0.9);
-}
+// ============= EXTRA CRAP
+//ofSetColor(255, 255, 255);
+
+//img.draw(rect.x, rect.y, rect.width, rect.height);
+//ofRect(rect.x * 1.05, rect.y * 1.05, 0.0f, rect.width * 0.9, rect.height * 0.9);
+//ofRect(pos.x  - 0.9*(rect.width/2), pos.y - 0.9*(rect.width/2), 0, rect.width * 0.9, rect.height * 0.9);

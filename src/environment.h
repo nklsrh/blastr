@@ -19,7 +19,7 @@
 #define SPAWN 4
 #define HOLE 5
 
-class Environment {
+struct Environment {
 	public:
 		int tileSize, numberOfRows, numberOfTiles, windowHeight, windowWidth, hillIntervalTime, hillIntervalLength, nextHillTile;
 		float zoomLevel;
